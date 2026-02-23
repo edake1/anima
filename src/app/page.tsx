@@ -20,6 +20,7 @@ import { PredictionGauge } from '@/components/visualization/PredictionGauge';
 import { ExpertOrbit } from '@/components/visualization/ExpertOrbit';
 import { LiveMetaculusWidget } from '@/components/interactive/LiveMetaculusWidget';
 import { useStore } from '@/lib/stores/useStore';
+import { CountUpStat } from '@/components/ui/CountUpStat';
 
 const quickStats = [
   { label: 'AGI by 2030', value: '55%', trend: 'up', color: 'text-violet-400', subtitle: 'community forecast', accent: 'border-violet-500/40' },
@@ -208,7 +209,7 @@ export default function HomePage() {
                 className={`glass-light rounded-2xl p-4 text-center border-t-2 ${stat.accent}`}
               >
                 <div className={`text-2xl sm:text-3xl font-bold tabular-nums ${stat.color} mb-1`}>
-                  {stat.value}
+                  <CountUpStat value={stat.value} />
                 </div>
                 <div className="text-xs font-medium text-zinc-300 mb-0.5">{stat.label}</div>
                 {stat.subtitle && (

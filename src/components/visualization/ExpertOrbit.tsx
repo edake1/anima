@@ -1,111 +1,110 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import { getExpertsByStance } from '@/lib/data';
 import { cn } from '@/lib/utils';
 
-const stanceColors = {
-  optimist: 'from-emerald-500 to-teal-600',
-  cautious: 'from-amber-500 to-orange-600',
-  skeptic: 'from-blue-500 to-indigo-600',
-  neutral: 'from-violet-500 to-purple-600',
+const stanceConfig = {
+  optimist: { gradient: 'from-emerald-500 to-teal-600', ring: 118, label: 'Optimist', dot: 'bg-emerald-400' },
+  cautious:  { gradient: 'from-amber-500 to-orange-600',  ring: 152, label: 'Cautious',  dot: 'bg-amber-400' },
+  skeptic:   { gradient: 'from-blue-500 to-indigo-600',   ring: 184, label: 'Skeptic',   dot: 'bg-blue-400' },
+  neutral:   { gradient: 'from-violet-500 to-purple-600', ring: 138, label: 'Neutral',   dot: 'bg-violet-400' },
 };
 
+function buildNodes() {
+  const byStance = Object.entries(stanceConfig).map(([stance, cfg]) => {
+    const stanceKey = stance as keyof typeof stanceConfig;
+    const stanceExperts = getExpertsByStance(stanceKey);
+    const angleOffset = stanceKey === 'optimist' ? 0 : stanceKey === 'cautious' ? 0.4 : stanceKey === 'skeptic' ? 0.8 : 1.2;
+    return stanceExperts.map((expert, i) => {
+      const angle = angleOffset * Math.PI * 2 + (i / Math.max(stanceExperts.length, 1)) * 2 * Math.PI - Math.PI / 2;
+      return { expert, cfg, x: Math.cos(angle) * cfg.ring, y: Math.sin(angle) * cfg.ring };
+    });
+  });
+  return byStance.flat();
+}
+
 export function ExpertOrbit() {
-  const optimists = getExpertsByStance('optimist');
-  const cautious = getExpertsByStance('cautious');
-  const skeptics = getExpertsByStance('skeptic');
-  const neutral = getExpertsByStance('neutral');
-  
-  const allExperts = [...optimists, ...cautious, ...skeptics, ...neutral];
-  
+  const nodes = buildNodes();
+
   return (
-    <div className="relative w-full h-[400px] flex items-center justify-center">
-      {/* Center - AGI */}
-      <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 0.5 }}
-        className="absolute z-10 w-24 h-24 rounded-full bg-gradient-to-br from-violet-600 via-purple-500 to-pink-500 flex items-center justify-center shadow-2xl shadow-violet-500/40"
-      >
-        <span className="text-white font-bold text-lg">AGI</span>
-      </motion.div>
-      
-      {/* Orbit Rings */}
-      {[1, 2, 3, 4].map((ring) => (
+    <div className="relative w-full h-[420px] flex items-center justify-center overflow-hidden">
+      {/* Orbit ring guides */}
+      {[118, 138, 152, 184].map((r, i) => (
         <motion.div
-          key={ring}
+          key={r}
           initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.3 }}
-          transition={{ delay: 0.2 * ring, duration: 0.5 }}
-          className="absolute rounded-full border border-zinc-700"
-          style={{
-            width: `${ring * 80 + 100}px`,
-            height: `${ring * 80 + 100}px`,
-          }}
+          animate={{ scale: 1, opacity: 0.18 }}
+          transition={{ delay: 0.15 * i, duration: 0.6 }}
+          className="absolute rounded-full border border-zinc-700 pointer-events-none"
+          style={{ width: r * 2, height: r * 2 }}
         />
       ))}
-      
-      {/* Expert Nodes */}
-      {allExperts.map((expert, index) => {
-        const angle = (index / allExperts.length) * 2 * Math.PI - Math.PI / 2;
-        const radius = 140 + (index % 3) * 30;
-        const x = Math.cos(angle) * radius;
-        const y = Math.sin(angle) * radius;
-        
-        return (
-          <motion.div
-            key={expert.id}
-            initial={{ scale: 0, x: 0, y: 0 }}
-            animate={{ 
-              scale: 1, 
-              x, 
-              y,
-            }}
-            transition={{ 
-              delay: 0.5 + index * 0.1, 
-              duration: 0.5,
-              type: 'spring',
-              stiffness: 100
-            }}
-            className={cn(
-              'absolute z-20 flex flex-col items-center cursor-pointer group',
-              'transition-transform hover:scale-110'
-            )}
-            style={{
-              transform: 'translate(-50%, -50%)',
-              left: '50%',
-              top: '50%',
-            }}
-          >
-            {/* Avatar */}
-            <div 
-              className={cn(
-                'w-12 h-12 rounded-full bg-gradient-to-br flex items-center justify-center shadow-lg',
-                stanceColors[expert.stance]
-              )}
-            >
-              <span className="text-white font-bold text-sm">
-                {expert.name.split(' ').map(n => n[0]).join('')}
-              </span>
-            </div>
-            
-            {/* Name Tooltip */}
-            <div className="absolute top-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <div className="px-2 py-1 rounded bg-zinc-800 text-xs text-zinc-300 whitespace-nowrap">
-                {expert.name}
+
+      {/* Center — AGI */}
+      <motion.div
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.6, type: 'spring', stiffness: 180 }}
+        className="absolute z-10 w-24 h-24 rounded-full bg-gradient-to-br from-violet-600 via-purple-500 to-pink-500 flex items-center justify-center shadow-2xl shadow-violet-500/50 cursor-default"
+        style={{ marginLeft: -48, marginTop: -48, left: '50%', top: '50%' }}
+      >
+        <div className="text-center">
+          <p className="text-white font-bold text-lg leading-none">AGI</p>
+          <p className="text-white/50 text-[9px] tracking-widest mt-0.5">TARGET</p>
+        </div>
+        <motion.div
+          animate={{ scale: [1, 1.6, 1], opacity: [0.35, 0, 0.35] }}
+          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute inset-0 rounded-full bg-violet-500/20"
+        />
+      </motion.div>
+
+      {/* Expert nodes — KEY FIX: margin offsets center the dot without touching FM's transform */}
+      {nodes.map(({ expert, cfg, x, y }, index) => (
+        <motion.div
+          key={expert.id}
+          initial={{ x: 0, y: 0, scale: 0, opacity: 0 }}
+          animate={{ x, y, scale: 1, opacity: 1 }}
+          transition={{ delay: 0.4 + index * 0.08, duration: 0.6, type: 'spring', stiffness: 120, damping: 14 }}
+          className="absolute z-20 group"
+          style={{ left: '50%', top: '50%', marginLeft: -24, marginTop: -24 }}
+        >
+          <Link href={`/experts/${expert.id}`}>
+            <div className="relative">
+              <motion.div
+                whileHover={{ scale: 1.25 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 18 }}
+                className={cn(
+                  'w-12 h-12 rounded-full bg-gradient-to-br flex items-center justify-center shadow-lg cursor-pointer',
+                  cfg.gradient,
+                )}
+              >
+                <span className="text-white font-bold text-xs">
+                  {expert.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                </span>
+              </motion.div>
+
+              {/* Hover tooltip */}
+              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 pointer-events-none z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                <div className="glass rounded-xl px-3 py-2 shadow-xl border border-violet-500/20 whitespace-nowrap">
+                  <p className="text-xs font-semibold text-white leading-tight">{expert.name}</p>
+                  <p className="text-[10px] text-zinc-400 mt-0.5">{expert.title} · {expert.organization}</p>
+                </div>
               </div>
             </div>
-          </motion.div>
-        );
-      })}
-      
+          </Link>
+        </motion.div>
+      ))}
+
       {/* Legend */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex gap-4">
-        {Object.entries(stanceColors).map(([stance, gradient]) => (
-          <div key={stance} className="flex items-center gap-2">
-            <div className={cn('w-3 h-3 rounded-full bg-gradient-to-br', gradient)} />
-            <span className="text-xs text-zinc-500 capitalize">{stance}</span>
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-wrap justify-center gap-x-4 gap-y-1 pb-1">
+        {Object.entries(stanceConfig).map(([stance, cfg]) => (
+          <div key={stance} className="flex items-center gap-1.5">
+            <div className={cn('w-2.5 h-2.5 rounded-full', cfg.dot)} />
+            <span className="text-xs text-zinc-500">{cfg.label}</span>
           </div>
         ))}
       </div>

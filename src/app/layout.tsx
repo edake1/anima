@@ -5,6 +5,8 @@ import { Navigation } from '@/components/layout/Navigation';
 import { StarField } from '@/components/visualization/StarField';
 import { OnboardingModal } from '@/components/layout/OnboardingModal';
 import { ThemeProvider } from '@/components/layout/ThemeProvider';
+import { AchievementsProvider } from '@/components/layout/AchievementsProvider';
+import { Toaster } from '@/components/ui/sonner';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -44,6 +46,8 @@ export default function RootLayout({
           {children}
         </main>
         <OnboardingModal />
+        <AchievementsProvider />
+        <Toaster position="bottom-right" />
       </body>
     </html>
   );
