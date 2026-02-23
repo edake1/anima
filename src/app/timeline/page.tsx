@@ -330,10 +330,12 @@ export default function TimelinePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-4 overflow-y-auto"
+          className="fixed inset-0 z-50"
           onClick={() => setSelectedMilestone(null)}
         >
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" />
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" onClick={() => setSelectedMilestone(null)} />
+          <div className="absolute inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-start sm:items-center justify-center p-4">
           <motion.div
             initial={{ scale: 0.9, y: 20 }}
             animate={{ scale: 1, y: 0 }}
@@ -390,6 +392,8 @@ export default function TimelinePage() {
               </div>
             )}
           </motion.div>
+            </div>
+          </div>
         </motion.div>
       )}
     </div>

@@ -68,15 +68,18 @@ export function OnboardingModal() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[100] flex items-start sm:items-center justify-center p-4 overflow-y-auto"
+        className="fixed inset-0 z-[100]"
       >
-        {/* Backdrop */}
+        {/* Backdrop — truly fixed, never scrolls */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="absolute inset-0 bg-black/80 backdrop-blur-xl"
         />
-        
+
+        {/* Scroll layer — sits on top of backdrop */}
+        <div className="absolute inset-0 overflow-y-auto">
+          <div className="flex min-h-full items-start sm:items-center justify-center p-4">
         {/* Content */}
         <motion.div
           initial={{ scale: 0.9, opacity: 0, y: 20 }}
@@ -250,6 +253,8 @@ export function OnboardingModal() {
             </div>
           )}
         </motion.div>
+          </div>
+        </div>
       </motion.div>
     </AnimatePresence>
   );
