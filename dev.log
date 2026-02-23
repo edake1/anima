@@ -215,3 +215,4 @@
  GET /concepts 200 in 46ms (compile: 33ms, render: 13ms)
 ✓ Compiled in 61ms
 ✓ Compiled in 328ms
+✓ Compiled in 94ms

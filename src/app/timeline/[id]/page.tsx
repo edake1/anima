@@ -51,7 +51,7 @@ export default function MilestoneDetailPage({ params }: { params: Promise<{ id: 
       {/* Hero */}
       <div className={`relative bg-gradient-to-br ${impact.gradient}`}>
         <div className="absolute inset-0 bg-zinc-950/70" />
-        <div className="relative max-w-4xl mx-auto px-4 py-16">
+        <div className="relative max-w-4xl mx-auto px-4 py-10 sm:py-16">
           <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
             <Link
               href="/timeline"
@@ -89,7 +89,7 @@ export default function MilestoneDetailPage({ params }: { params: Promise<{ id: 
 
             <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">{milestone.title}</h1>
 
-            <div className="flex items-center gap-4 text-sm text-zinc-400">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-sm text-zinc-400">
               <span className="flex items-center gap-1.5">
                 <Calendar className="w-4 h-4" />
                 {new Date(milestone.date).toLocaleDateString('en-US', {

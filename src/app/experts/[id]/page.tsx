@@ -85,7 +85,7 @@ export default function ExpertDetailPage({ params }: { params: Promise<{ id: str
       {/* Hero */}
       <div className={`relative bg-gradient-to-br ${stance.gradient} opacity-90`}>
         <div className="absolute inset-0 bg-zinc-950/70" />
-        <div className="relative max-w-4xl mx-auto px-4 py-16">
+        <div className="relative max-w-4xl mx-auto px-4 py-10 sm:py-16">
           <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
             <Link
               href="/experts"
@@ -100,11 +100,11 @@ export default function ExpertDetailPage({ params }: { params: Promise<{ id: str
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="flex items-start gap-6"
+            className="flex flex-col sm:flex-row items-start gap-6"
           >
             {/* Avatar */}
             <div
-              className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${stance.gradient} flex items-center justify-center text-white font-bold text-2xl shadow-2xl flex-shrink-0`}
+              className={`w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br ${stance.gradient} flex items-center justify-center text-white font-bold text-xl sm:text-2xl shadow-2xl flex-shrink-0`}
             >
               {expert.name.split(' ').map((n) => n[0]).join('')}
             </div>
