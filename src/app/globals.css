@@ -30,6 +30,51 @@
   --font-display: 'Inter', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+
+  /* Theme-aware tokens (cosmic defaults) */
+  --theme-bg: #030014;
+  --theme-fg: #e2e8f0;
+  --theme-accent-1: #8b5cf6;
+  --theme-accent-2: #ec4899;
+  --theme-glass-bg: rgba(15, 12, 41, 0.6);
+  --theme-glass-border: rgba(139, 92, 246, 0.1);
+  --theme-dot-grid: rgba(139, 92, 246, 0.08);
+  --theme-nebula-a: rgba(139, 92, 246, 0.15);
+  --theme-nebula-b: rgba(244, 63, 94, 0.10);
+  --theme-nebula-c: rgba(34, 211, 238, 0.05);
+}
+
+/* Void theme — true black, high contrast, slate tones */
+[data-theme="void"] {
+  --theme-bg: #000000;
+  --theme-accent-1: #64748b;
+  --theme-accent-2: #94a3b8;
+  --theme-glass-bg: rgba(0, 0, 0, 0.75);
+  --theme-glass-border: rgba(148, 163, 184, 0.12);
+  --theme-dot-grid: rgba(148, 163, 184, 0.06);
+  --theme-nebula-a: rgba(71, 85, 105, 0.15);
+  --theme-nebula-b: rgba(51, 65, 85, 0.10);
+  --theme-nebula-c: rgba(30, 41, 59, 0.08);
+  --gradient-cosmic: linear-gradient(135deg, #475569 0%, #334155 50%, #1e293b 100%);
+  --glow-violet: 0 0 60px rgba(100, 116, 139, 0.3);
+  --glow-pink: 0 0 60px rgba(148, 163, 184, 0.3);
+}
+
+/* Aurora theme — deep forest teal with emerald / cyan accents */
+[data-theme="aurora"] {
+  --theme-bg: #011a15;
+  --theme-accent-1: #10b981;
+  --theme-accent-2: #06b6d4;
+  --theme-glass-bg: rgba(1, 20, 16, 0.65);
+  --theme-glass-border: rgba(16, 185, 129, 0.12);
+  --theme-dot-grid: rgba(16, 185, 129, 0.07);
+  --theme-nebula-a: rgba(16, 185, 129, 0.12);
+  --theme-nebula-b: rgba(6, 182, 212, 0.08);
+  --theme-nebula-c: rgba(52, 211, 153, 0.05);
+  --gradient-cosmic: linear-gradient(135deg, #10b981 0%, #0891b2 50%, #065f46 100%);
+  --glow-violet: 0 0 60px rgba(16, 185, 129, 0.35);
+  --glow-pink: 0 0 60px rgba(6, 182, 212, 0.35);
+  --glow-cyan: 0 0 60px rgba(52, 211, 153, 0.35);
 }
 
 /* Base Styles */
@@ -39,9 +84,10 @@ html {
 
 body {
   font-family: var(--font-body);
-  background: #030014;
-  color: #e2e8f0;
+  background: var(--theme-bg, #030014);
+  color: var(--theme-fg, #e2e8f0);
   overflow-x: hidden;
+  transition: background 0.4s ease;
 }
 
 /* Subtle dot-grid texture overlay */
@@ -49,7 +95,7 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: radial-gradient(circle, rgba(139, 92, 246, 0.08) 1px, transparent 1px);
+  background-image: radial-gradient(circle, var(--theme-dot-grid, rgba(139, 92, 246, 0.08)) 1px, transparent 1px);
   background-size: 40px 40px;
   pointer-events: none;
   z-index: 0;
@@ -73,10 +119,10 @@ body::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: 
-    radial-gradient(ellipse at 20% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 80%, rgba(244, 63, 94, 0.1) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(34, 211, 238, 0.05) 0%, transparent 70%);
+  background:
+    radial-gradient(ellipse at 20% 20%, var(--theme-nebula-a, rgba(139,92,246,0.15)) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, var(--theme-nebula-b, rgba(244,63,94,0.10)) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, var(--theme-nebula-c, rgba(34,211,238,0.05)) 0%, transparent 70%);
   animation: cosmicPulse 20s ease-in-out infinite;
 }
 
@@ -153,9 +199,10 @@ body::before {
 
 /* Glass Effect */
 .glass {
-  background: rgba(15, 12, 41, 0.6);
+  background: var(--theme-glass-bg, rgba(15, 12, 41, 0.6));
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(139, 92, 246, 0.1);
+  border: 1px solid var(--theme-glass-border, rgba(139, 92, 246, 0.1));
+  transition: background 0.4s ease, border-color 0.4s ease;
 }
 
 .glass-light {

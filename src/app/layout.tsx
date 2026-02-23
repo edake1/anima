@@ -4,6 +4,7 @@ import './globals.css';
 import { Navigation } from '@/components/layout/Navigation';
 import { StarField } from '@/components/visualization/StarField';
 import { OnboardingModal } from '@/components/layout/OnboardingModal';
+import { ThemeProvider } from '@/components/layout/ThemeProvider';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -36,6 +37,7 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
         <div className="cosmic-bg" />
+        <ThemeProvider />
         <StarField />
         <Navigation />
         <main className="relative min-h-screen">

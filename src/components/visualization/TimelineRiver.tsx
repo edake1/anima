@@ -67,7 +67,7 @@ export function TimelineRiver() {
         </div>
 
         {/* River track & nodes */}
-        <div className="relative h-16">
+        <div className="relative h-28">
           {/* Center line */}
           <div className="absolute top-1/2 left-0 right-0 h-px bg-zinc-800 -translate-y-1/2" />
 
@@ -78,42 +78,52 @@ export function TimelineRiver() {
             const size = impactSize[m.impact] ?? 7;
             const color = impactColor[m.impact] ?? '#6366f1';
             const isHovered = hovered?.id === m.id;
+            // Stagger above/below centre to keep crowded clusters readable
+            const isAbove = i % 2 === 0;
+            const dotTopPct = isAbove ? 27 : 73;
 
             return (
-              <motion.div
-                key={m.id}
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: i * 0.02, type: 'spring', stiffness: 300, damping: 20 }}
-                onMouseEnter={(e) => {
-                  setHovered(m);
-                  const rect = containerRef.current?.getBoundingClientRect();
-                  const el = e.currentTarget.getBoundingClientRect();
-                  setTooltipX(el.left - (rect?.left ?? 0) + el.width / 2);
-                }}
-                onMouseLeave={() => setHovered(null)}
-                className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 cursor-pointer z-10"
-                style={{ left: `${pct}%` }}
-              >
-                <motion.div
-                  animate={isHovered ? { scale: 1.6 } : { scale: 1 }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-                  className="rounded-full"
+              <div key={m.id} className="absolute inset-0 pointer-events-none" style={{ left: `${pct}%` }}>
+                {/* Tick from dot to centre line */}
+                <div
+                  className="absolute pointer-events-none"
                   style={{
-                    width: size,
-                    height: size,
-                    backgroundColor: color,
-                    boxShadow: isHovered ? `0 0 12px ${color}cc` : `0 0 4px ${color}66`,
+                    left: 0,
+                    top: isAbove ? `${dotTopPct}%` : '50%',
+                    height: `${73 - 27}%`,
+                    width: 1,
+                    background: `${color}30`,
+                    transform: 'translateX(-50%)',
                   }}
                 />
-                {/* year tick for transformative */}
-                {m.impact === 'transformative' && (
-                  <div
-                    className="absolute left-1/2 -translate-x-1/2 w-px h-3 bg-pink-500/40"
-                    style={{ top: '100%', marginTop: 2 }}
+
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: i * 0.02, type: 'spring', stiffness: 300, damping: 20 }}
+                  onMouseEnter={(e) => {
+                    setHovered(m);
+                    const rect = containerRef.current?.getBoundingClientRect();
+                    const el = e.currentTarget.getBoundingClientRect();
+                    setTooltipX(el.left - (rect?.left ?? 0) + el.width / 2);
+                  }}
+                  onMouseLeave={() => setHovered(null)}
+                  className="absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-10 pointer-events-auto"
+                  style={{ top: `${dotTopPct}%` }}
+                >
+                  <motion.div
+                    animate={isHovered ? { scale: 1.6 } : { scale: 1 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                    className="rounded-full"
+                    style={{
+                      width: size,
+                      height: size,
+                      backgroundColor: color,
+                      boxShadow: isHovered ? `0 0 12px ${color}cc` : `0 0 4px ${color}66`,
+                    }}
                   />
-                )}
-              </motion.div>
+                </motion.div>
+              </div>
             );
           })}
         </div>

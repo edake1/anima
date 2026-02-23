@@ -12,9 +12,15 @@ import {
   Achievement 
 } from '@/types';
 
+export type AppTheme = 'cosmic' | 'void' | 'aurora';
+
 interface AppState extends UserState {
   // Mode
   setMode: (mode: UserMode) => void;
+
+  // Theme
+  theme: AppTheme;
+  setTheme: (theme: AppTheme) => void;
   
   // Navigation
   currentPage: string;
@@ -79,6 +85,7 @@ export const useStore = create<AppState>()(
       totalExplorationTime: 0,
       currentPage: 'home',
       sessionStartTime: null,
+      theme: 'cosmic' as AppTheme,
       isMuted: false,
       showOnboarding: true,
       selectedExpert: null,
@@ -88,6 +95,9 @@ export const useStore = create<AppState>()(
       
       // Mode
       setMode: (mode) => set({ mode }),
+
+      // Theme
+      setTheme: (theme) => set({ theme }),
       
       // Navigation
       setCurrentPage: (page) => set({ currentPage: page }),
@@ -161,7 +171,8 @@ export const useStore = create<AppState>()(
         preferences: state.preferences,
         lastVisit: state.lastVisit,
         totalExplorationTime: state.totalExplorationTime,
-        showOnboarding: state.showOnboarding
+        showOnboarding: state.showOnboarding,
+        theme: state.theme
       })
     }
   )
