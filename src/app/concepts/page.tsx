@@ -1,22 +1,22 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Lightbulb, 
-  Search, 
-  BookOpen,
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import {
+  Lightbulb,
+  Search,
   Network,
-  X,
-  ExternalLink
+  LayoutGrid,
 } from 'lucide-react';
-import { concepts, getConceptById } from '@/lib/data/concepts';
+import { concepts } from '@/lib/data/concepts';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useStore } from '@/lib/stores/useStore';
 import { cn } from '@/lib/utils';
 import { Concept, ConceptCategory } from '@/types';
+import { ConceptGraph } from '@/components/visualization/ConceptGraph';
 
 const categoryConfig: Record<ConceptCategory, { label: string; color: string }> = {
   architecture: { label: 'Architecture', color: 'bg-violet-500' },
@@ -37,7 +37,7 @@ const difficultyColors = {
 
 export default function ConceptsPage() {
   const [selectedCategory, setSelectedCategory] = useState<ConceptCategory | null>(null);
-  const [selectedConcept, setSelectedConcept] = useState<Concept | null>(null);
+  const [viewMode, setViewMode] = useState<'grid' | 'graph'>('grid');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDifficulty, setSelectedDifficulty] = useState<Concept['difficulty'] | null>(null);
   const { addVisitedNode } = useStore();
@@ -51,10 +51,6 @@ export default function ConceptsPage() {
     return matchesCategory && matchesDifficulty && matchesSearch;
   });
   
-  const handleConceptClick = (concept: Concept) => {
-    setSelectedConcept(concept);
-    addVisitedNode(concept.id);
-  };
   
   return (
     <div className="min-h-screen pt-24 pb-20">
@@ -143,31 +139,59 @@ export default function ConceptsPage() {
               ))}
             </div>
             
-            <div className="flex gap-2">
-              {['beginner', 'intermediate', 'advanced'].map((diff) => (
-                <Button
-                  key={diff}
-                  variant={selectedDifficulty === diff ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setSelectedDifficulty(selectedDifficulty === diff ? null : diff as Concept['difficulty'])}
+            <div className="flex items-center gap-2">
+              <div className="flex gap-1.5">
+                {['beginner', 'intermediate', 'advanced'].map((diff) => (
+                  <Button
+                    key={diff}
+                    variant={selectedDifficulty === diff ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setSelectedDifficulty(selectedDifficulty === diff ? null : diff as Concept['difficulty'])}
+                    className={cn(
+                      'rounded-full capitalize',
+                      selectedDifficulty === diff 
+                        ? 'bg-zinc-700 hover:bg-zinc-600' 
+                        : 'border-zinc-700 text-zinc-400'
+                    )}
+                  >
+                    {diff}
+                  </Button>
+                ))}
+              </div>
+              {/* View toggle */}
+              <div className="flex items-center gap-1 ml-2 p-1 rounded-xl bg-zinc-800/60 border border-zinc-700/50">
+                <button
+                  onClick={() => setViewMode('grid')}
                   className={cn(
-                    'rounded-full capitalize',
-                    selectedDifficulty === diff 
-                      ? 'bg-zinc-700 hover:bg-zinc-600' 
-                      : 'border-zinc-700 text-zinc-400'
+                    'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all',
+                    viewMode === 'grid' ? 'bg-violet-600 text-white' : 'text-zinc-500 hover:text-zinc-300'
                   )}
                 >
-                  {diff}
-                </Button>
-              ))}
+                  <LayoutGrid className="w-3.5 h-3.5" />
+                  Grid
+                </button>
+                <button
+                  onClick={() => setViewMode('graph')}
+                  className={cn(
+                    'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all',
+                    viewMode === 'graph' ? 'bg-violet-600 text-white' : 'text-zinc-500 hover:text-zinc-300'
+                  )}
+                >
+                  <Network className="w-3.5 h-3.5" />
+                  Graph
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </section>
       
-      {/* Concepts Grid */}
+      {/* Concepts Grid or Graph */}
       <section className="px-4">
         <div className="max-w-7xl mx-auto">
+          {viewMode === 'graph' ? (
+            <ConceptGraph />
+          ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredConcepts.map((concept, index) => {
               const catConfig = categoryConfig[concept.category];
@@ -179,153 +203,49 @@ export default function ConceptsPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.03 }}
                   whileHover={{ y: -5 }}
-                  onClick={() => handleConceptClick(concept)}
-                  className="glass-light rounded-2xl p-6 cursor-pointer border border-transparent hover:border-violet-500/30 transition-all"
                 >
-                  {/* Header */}
-                  <div className="flex items-start justify-between gap-3 mb-3">
-                    <h3 className="text-lg font-bold text-white">{concept.name}</h3>
-                    <Badge className={cn(
-                      'text-[10px]',
-                      catConfig.color,
-                      'text-white border-0'
-                    )}>
-                      {catConfig.label}
-                    </Badge>
-                  </div>
-                  
-                  {/* Description */}
-                  <p className="text-sm text-zinc-400 mb-4 line-clamp-3">
-                    {concept.shortDescription}
-                  </p>
-                  
-                  {/* Footer */}
-                  <div className="flex items-center justify-between">
-                    <Badge 
-                      variant="outline" 
-                      className={cn('capitalize', difficultyColors[concept.difficulty])}
-                    >
-                      {concept.difficulty}
-                    </Badge>
-                    
-                    <div className="flex items-center gap-1 text-xs text-zinc-600">
-                      <Network className="w-3 h-3" />
-                      {concept.connections.length} connections
+                  <Link href={`/concepts/${concept.id}`} onClick={() => addVisitedNode(concept.id)}>
+                    <div className="glass-light rounded-2xl p-6 cursor-pointer border border-transparent hover:border-violet-500/30 transition-all h-full">
+                      {/* Header */}
+                      <div className="flex items-start justify-between gap-3 mb-3">
+                        <h3 className="text-lg font-bold text-white">{concept.name}</h3>
+                        <Badge className={cn(
+                          'text-[10px] shrink-0',
+                          catConfig.color,
+                          'text-white border-0'
+                        )}>
+                          {catConfig.label}
+                        </Badge>
+                      </div>
+                      
+                      {/* Description */}
+                      <p className="text-sm text-zinc-400 mb-4 line-clamp-3">
+                        {concept.shortDescription}
+                      </p>
+                      
+                      {/* Footer */}
+                      <div className="flex items-center justify-between">
+                        <Badge 
+                          variant="outline" 
+                          className={cn('capitalize', difficultyColors[concept.difficulty])}
+                        >
+                          {concept.difficulty}
+                        </Badge>
+                        
+                        <div className="flex items-center gap-1 text-xs text-zinc-600">
+                          <Network className="w-3 h-3" />
+                          {concept.connections.length} connections
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 </motion.div>
               );
             })}
           </div>
+          )}
         </div>
       </section>
-      
-      {/* Concept Detail Modal */}
-      <AnimatePresence>
-        {selectedConcept && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto"
-            onClick={() => setSelectedConcept(null)}
-          >
-            <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" />
-            
-            <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-3xl glass rounded-3xl p-8 border border-violet-500/20 my-8"
-            >
-              {/* Close */}
-              <button
-                onClick={() => setSelectedConcept(null)}
-                className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/5 text-zinc-400"
-              >
-                <X className="w-5 h-5" />
-              </button>
-              
-              {/* Header */}
-              <div className="flex items-start gap-4 mb-6">
-                <div className={cn(
-                  'w-12 h-12 rounded-xl flex items-center justify-center',
-                  categoryConfig[selectedConcept.category].color
-                )}>
-                  <BookOpen className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-white">{selectedConcept.name}</h2>
-                  <div className="flex items-center gap-2 mt-1">
-                    <Badge className={cn(categoryConfig[selectedConcept.category].color, 'text-white border-0')}>
-                      {categoryConfig[selectedConcept.category].label}
-                    </Badge>
-                    <Badge variant="outline" className={cn(difficultyColors[selectedConcept.difficulty])}>
-                      {selectedConcept.difficulty}
-                    </Badge>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Full Description */}
-              <div className="mb-8">
-                <p className="text-zinc-300 leading-relaxed">{selectedConcept.fullDescription}</p>
-              </div>
-              
-              {/* Connected Concepts */}
-              {selectedConcept.connections.length > 0 && (
-                <div className="mb-8">
-                  <h4 className="text-sm font-medium text-zinc-400 mb-3">Related Concepts</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedConcept.connections.map((conn) => {
-                      const related = getConceptById(conn.conceptId);
-                      if (!related) return null;
-                      
-                      return (
-                        <button
-                          key={conn.conceptId}
-                          onClick={() => setSelectedConcept(related)}
-                          className={cn(
-                            'flex items-center gap-2 px-3 py-2 rounded-lg text-sm',
-                            'bg-zinc-800/50 text-zinc-300 hover:bg-zinc-800 transition-colors'
-                          )}
-                        >
-                          {related.name}
-                          <Badge variant="outline" className="text-[10px] border-zinc-700 text-zinc-500">
-                            {conn.relationship}
-                          </Badge>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-              
-              {/* Sources */}
-              {selectedConcept.sources.length > 0 && (
-                <div className="border-t border-zinc-800 pt-6">
-                  <h4 className="text-sm font-medium text-zinc-400 mb-3">Sources</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedConcept.sources.map((source) => (
-                      <a
-                        key={source.id}
-                        href={source.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-zinc-800/50 text-sm text-zinc-400 hover:text-violet-400 transition-colors"
-                      >
-                        {source.title}
-                        <ExternalLink className="w-3 h-3" />
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

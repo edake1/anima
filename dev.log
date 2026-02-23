@@ -179,3 +179,12 @@
  GET /api/metaculus?id=3479 200 in 67ms (compile: 60ms, render: 6ms)
  GET /predictions 200 in 82ms (compile: 66ms, render: 16ms)
 ✓ Compiled in 50ms
+ GET /concepts 200 in 106ms (compile: 80ms, render: 26ms)
+ GET /concepts/1 404 in 591ms (compile: 479ms, render: 112ms)
+ GET /concepts 200 in 55ms (compile: 2ms, render: 53ms)
+✓ Compiled in 500ms
+✓ Compiled in 554ms
+ GET /concepts/transformers 200 in 65ms (compile: 28ms, render: 37ms)
+ GET /concepts 200 in 47ms (compile: 32ms, render: 16ms)
+ GET /concepts/multi-agent-systems 200 in 16ms (compile: 6ms, render: 10ms)
+✓ Compiled in 203ms
