@@ -338,7 +338,7 @@ export default function TimelinePage() {
             initial={{ scale: 0.9, y: 20 }}
             animate={{ scale: 1, y: 0 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-2xl glass rounded-3xl p-8 border border-violet-500/20"
+            className="relative w-full max-w-2xl glass rounded-3xl p-5 sm:p-8 border border-violet-500/20"
           >
             <button
               onClick={() => setSelectedMilestone(null)}
@@ -359,7 +359,7 @@ export default function TimelinePage() {
                 })()}
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-white">{selectedMilestone.title}</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-white">{selectedMilestone.title}</h2>
                 <p className="text-zinc-400">{new Date(selectedMilestone.date).toLocaleDateString('en-US', { 
                   year: 'numeric', month: 'long', day: 'numeric' 
                 })}</p>

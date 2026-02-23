@@ -211,3 +211,7 @@
  GET /concepts 200 in 544ms (compile: 212ms, render: 332ms)
 ✓ Compiled in 266ms
 ✓ Compiled in 52ms
+ GET /concepts/agi 200 in 109ms (compile: 74ms, render: 34ms)
+ GET /concepts 200 in 46ms (compile: 33ms, render: 13ms)
+✓ Compiled in 61ms
+✓ Compiled in 328ms

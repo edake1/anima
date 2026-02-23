@@ -101,7 +101,7 @@ export default function PredictionsPage() {
       {/* Key Metrics */}
       <section className="px-4 mb-12">
         <div className="max-w-7xl mx-auto">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <PredictionGauge
               label="AGI by 2030"
               probability={0.55}
@@ -169,7 +169,7 @@ export default function PredictionsPage() {
       
       {/* Sort Options */}
       <section className="px-4 mb-8">
-        <div className="max-w-7xl mx-auto flex items-center gap-4">
+        <div className="max-w-7xl mx-auto flex flex-wrap items-center gap-x-4 gap-y-2">
           <span className="text-sm text-zinc-500">Sort by:</span>
           <div className="flex gap-2">
             {[
@@ -272,7 +272,7 @@ export default function PredictionsPage() {
                       </div>
                       
                       {/* Timeframe */}
-                      <div className="flex items-center gap-4 mb-4 text-sm text-zinc-500">
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mb-4 text-sm text-zinc-500">
                         <div className="flex items-center gap-2">
                           <Clock className="w-4 h-4" />
                           <span>
@@ -289,7 +289,7 @@ export default function PredictionsPage() {
                       </div>
                       
                       {/* Community Votes */}
-                      <div className="flex items-center gap-6">
+                      <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
                         <div className="flex items-center gap-2">
                           <span className="text-emerald-400 font-medium">
                             {prediction.communityVotes.agree.toLocaleString()}
@@ -304,7 +304,7 @@ export default function PredictionsPage() {
                         </div>
                         
                         {/* Vote Bar */}
-                        <div className="flex-1 max-w-xs">
+                        <div className="w-full sm:flex-1 sm:max-w-xs">
                           <div className="h-2 bg-zinc-800 rounded-full overflow-hidden flex">
                             <div 
                               className="h-full bg-emerald-500/50"

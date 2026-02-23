@@ -319,7 +319,7 @@ export default function HomePage() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10"
           >
             <PredictionGauge
               label="AGI by 2027"
@@ -446,7 +446,7 @@ export default function HomePage() {
             </p>
           </motion.div>
           
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, index) => {
               const Icon = feature.icon;
               return (
@@ -491,7 +491,7 @@ export default function HomePage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="glass rounded-3xl p-12 relative overflow-hidden"
+            className="glass rounded-3xl p-6 sm:p-10 lg:p-12 relative overflow-hidden"
           >
             {/* Background Gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 via-transparent to-pink-500/10" />
@@ -532,7 +532,7 @@ export default function HomePage() {
               </span>
             </div>
             
-            <div className="flex items-center gap-6 text-sm text-zinc-500">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-zinc-500">
               <Link href="/sources" className="hover:text-zinc-300 transition-colors">
                 Sources
               </Link>

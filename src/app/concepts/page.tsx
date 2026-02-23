@@ -139,7 +139,7 @@ export default function ConceptsPage() {
               ))}
             </div>
             
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <div className="flex gap-1.5">
                 {['beginner', 'intermediate', 'advanced'].map((diff) => (
                   <Button
@@ -192,7 +192,7 @@ export default function ConceptsPage() {
           {viewMode === 'graph' ? (
             <ConceptGraph />
           ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredConcepts.map((concept, index) => {
               const catConfig = categoryConfig[concept.category];
               

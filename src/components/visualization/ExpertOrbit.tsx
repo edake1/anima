@@ -29,7 +29,9 @@ export function ExpertOrbit() {
   const nodes = buildNodes();
 
   return (
-    <div className="relative w-full h-[420px] flex items-center justify-center overflow-hidden">
+    <div className="relative w-full h-[280px] sm:h-[360px] lg:h-[420px] flex items-center justify-center overflow-hidden">
+      {/* Inner scale wrapper — shrinks orbit on small screens without layout overflow */}
+      <div className="absolute inset-0 flex items-center justify-center scale-[0.68] sm:scale-[0.86] lg:scale-100 transition-transform duration-300 origin-center">
       {/* Orbit ring guides */}
       {[118, 138, 152, 184].map((r, i) => (
         <motion.div
@@ -108,6 +110,7 @@ export function ExpertOrbit() {
           </div>
         ))}
       </div>
+      </div>{/* end inner scale wrapper */}
     </div>
   );
 }
