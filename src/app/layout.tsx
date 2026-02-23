@@ -19,12 +19,12 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'SYNTHESIS | AI Evolution Timeline',
+  title: 'PROMETHEUS | AI Evolution Timeline',
   description: 'An interactive journey through the age of AI - from LLMs to AGI to Superintelligence. Explore expert predictions, discover concepts, and navigate the future of artificial intelligence.',
   keywords: ['AI', 'AGI', 'ASI', 'artificial intelligence', 'machine learning', 'future', 'timeline', 'predictions'],
-  authors: [{ name: 'SYNTHESIS' }],
+  authors: [{ name: 'PROMETHEUS' }],
   openGraph: {
-    title: 'SYNTHESIS | AI Evolution Timeline',
+    title: 'PROMETHEUS | AI Evolution Timeline',
     description: 'An interactive journey through the age of AI',
     type: 'website',
   },

@@ -120,7 +120,7 @@ export function Navigation() {
                 <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </motion.div>
               <div className="hidden sm:block">
-                <h1 className="text-xl font-bold gradient-text">SYNTHESIS</h1>
+                <h1 className="text-xl font-bold gradient-text">PROMETHEUS</h1>
                 <p className="text-[10px] text-zinc-500 tracking-widest uppercase">AI Evolution</p>
               </div>
             </Link>

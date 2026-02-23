@@ -1,5 +1,5 @@
 // ==========================================
-// SYNTHESIS - AI Evolution Timeline
+// PROMETHEUS - AI Evolution Timeline
 // Core Type Definitions
 // ==========================================
 

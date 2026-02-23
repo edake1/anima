@@ -528,7 +528,7 @@ export default function HomePage() {
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
               <span className="text-sm text-zinc-500">
-                SYNTHESIS — An AI Evolution Timeline
+                PROMETHEUS — An AI Evolution Timeline
               </span>
             </div>
             

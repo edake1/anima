@@ -58,7 +58,7 @@ export default function AboutPage() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-light mb-6"
           >
             <Info className="w-4 h-4 text-violet-400" />
-            <span className="text-sm text-zinc-400">About SYNTHESIS</span>
+            <span className="text-sm text-zinc-400">About PROMETHEUS</span>
           </motion.div>
           
           <motion.h1
@@ -76,7 +76,7 @@ export default function AboutPage() {
             transition={{ delay: 0.2 }}
             className="text-xl text-zinc-400 max-w-2xl mx-auto"
           >
-            SYNTHESIS is an interactive exploration of artificial intelligence evolution — 
+            PROMETHEUS is an interactive exploration of artificial intelligence evolution — 
             from today&apos;s large language models to the possibilities of AGI and beyond.
           </motion.p>
         </div>
@@ -104,7 +104,7 @@ export default function AboutPage() {
                 remains deeply uncertain.
               </p>
               <p>
-                SYNTHESIS aims to change that. We aggregate expert predictions, visualize AI evolution, 
+                PROMETHEUS aims to change that. We aggregate expert predictions, visualize AI evolution, 
                 and present concepts accessibly — helping everyone understand and prepare for the age of AI.
               </p>
             </div>

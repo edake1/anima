@@ -216,3 +216,26 @@
 ✓ Compiled in 61ms
 ✓ Compiled in 328ms
 ✓ Compiled in 94ms
+✓ Compiled in 0ms
+ GET /sources 200 in 607ms (compile: 372ms, render: 234ms)
+ GET /concepts 200 in 614ms (compile: 247ms, render: 367ms)
+ GET /concepts 200 in 150ms (compile: 11ms, render: 140ms)
+ GET /sources 200 in 226ms (compile: 77ms, render: 149ms)
+ GET /concepts 200 in 144ms (compile: 3ms, render: 141ms)
+ GET /sources 200 in 196ms (compile: 4ms, render: 192ms)
+ GET /concepts 200 in 196ms (compile: 36ms, render: 160ms)
+ GET /sources 200 in 121ms (compile: 7ms, render: 114ms)
+ GET /concepts 200 in 143ms (compile: 26ms, render: 117ms)
+ GET /sources 200 in 181ms (compile: 7ms, render: 174ms)
+ GET /concepts 200 in 156ms (compile: 5ms, render: 151ms)
+ GET /sources 200 in 181ms (compile: 7ms, render: 174ms)
+ GET /concepts 200 in 181ms (compile: 30ms, render: 152ms)
+ GET /sources 200 in 132ms (compile: 8ms, render: 124ms)
+ GET /concepts 200 in 188ms (compile: 34ms, render: 154ms)
+ GET /sources 200 in 183ms (compile: 7ms, render: 176ms)
+ GET /concepts 200 in 153ms (compile: 3ms, render: 151ms)
+ GET /sources 200 in 148ms (compile: 5ms, render: 144ms)
+ GET /concepts 200 in 148ms (compile: 33ms, render: 115ms)
+ GET /sources 200 in 82ms (compile: 5ms, render: 78ms)
+ GET /concepts 200 in 82ms (compile: 31ms, render: 52ms)
+ GET /sources 200 in 32ms (compile: 6ms, render: 26ms)

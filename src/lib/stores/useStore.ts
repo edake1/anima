@@ -1,5 +1,5 @@
 // ==========================================
-// SYNTHESIS - AI Evolution Timeline
+// PROMETHEUS - AI Evolution Timeline
 // Global State Store
 // ==========================================
 
@@ -160,7 +160,7 @@ export const useStore = create<AppState>()(
       setSelectedConcept: (id) => set({ selectedConcept: id })
     }),
     {
-      name: 'synthesis-storage',
+      name: 'prometheus-storage',
       partialize: (state) => ({
         mode: state.mode,
         visitedNodes: state.visitedNodes,

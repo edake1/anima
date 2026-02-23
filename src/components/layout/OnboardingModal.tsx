@@ -102,7 +102,7 @@ export function OnboardingModal() {
                 transition={{ delay: 0.3 }}
                 className="text-4xl sm:text-5xl font-bold gradient-text mb-4"
               >
-                Welcome to SYNTHESIS
+                Welcome to PROMETHEUS
               </motion.h2>
               
               <motion.p
@@ -243,7 +243,7 @@ export function OnboardingModal() {
                       : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
                   )}
                 >
-                  Enter SYNTHESIS
+                  Enter PROMETHEUS
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </motion.div>

@@ -280,7 +280,7 @@ export default function SourcesPage() {
             <h3 className="text-xl font-bold text-white mb-4">Our Methodology</h3>
             <div className="space-y-4 text-zinc-400">
               <p>
-                All data in SYNTHESIS is sourced from publicly available, credible sources. 
+                All data in PROMETHEUS is sourced from publicly available, credible sources. 
                 We prioritize peer-reviewed papers, official company announcements, and established 
                 prediction platforms like Metaculus.
               </p>

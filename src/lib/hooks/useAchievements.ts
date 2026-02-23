@@ -9,7 +9,7 @@ const ACHIEVEMENT_DEFS = [
   {
     id: 'first-visit',
     name: 'First Steps',
-    description: 'You opened SYNTHESIS for the first time.',
+    description: 'You opened PROMETHEUS for the first time.',
     emoji: '🚀',
     check: (visitedNodes: string[]) => visitedNodes.length >= 0,
     triggerOnce: true,
