@@ -10,7 +10,6 @@ import {
   Target, 
   Lightbulb, 
   GitBranch,
-  TrendingUp,
   Sparkles,
   Brain,
   Rocket
@@ -19,13 +18,14 @@ import { Button } from '@/components/ui/button';
 import { TimelineRiver } from '@/components/visualization/TimelineRiver';
 import { PredictionGauge } from '@/components/visualization/PredictionGauge';
 import { ExpertOrbit } from '@/components/visualization/ExpertOrbit';
+import { LiveMetaculusWidget } from '@/components/interactive/LiveMetaculusWidget';
 import { useStore } from '@/lib/stores/useStore';
 
 const quickStats = [
-  { label: 'AGI by 2030', value: '55%', trend: 'up', color: 'text-violet-400', subtitle: 'community forecast' },
-  { label: 'Expert Predictions', value: '2,847', trend: 'up', color: 'text-cyan-400', subtitle: 'tracked' },
-  { label: 'Active Forecasters', value: '12.4K', trend: 'up', color: 'text-pink-400', subtitle: 'estimated' },
-  { label: 'Timeline Acceleration', value: '48y', trend: 'down', color: 'text-amber-400', subtitle: 'shortened est.' },
+  { label: 'AGI by 2030', value: '55%', trend: 'up', color: 'text-violet-400', subtitle: 'community forecast', accent: 'border-violet-500/40' },
+  { label: 'Expert Predictions', value: '73+', trend: 'up', color: 'text-cyan-400', subtitle: 'tracked', accent: 'border-cyan-500/40' },
+  { label: 'AI Researchers', value: '9', trend: 'up', color: 'text-pink-400', subtitle: 'profiled', accent: 'border-pink-500/40' },
+  { label: 'Timeline Events', value: '60+', trend: 'up', color: 'text-amber-400', subtitle: '1958 → now', accent: 'border-amber-500/40' },
 ];
 
 const features = [
@@ -138,7 +138,7 @@ export default function HomePage() {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
             <span className="text-sm text-zinc-400">
-              <span className="text-white font-medium">Data</span> last updated Dec 2024
+              <span className="text-white font-medium">Data</span> last updated Feb 2026
             </span>
           </motion.div>
           
@@ -205,13 +205,12 @@ export default function HomePage() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.7 + index * 0.1 }}
-                className="glass-light rounded-2xl p-4 text-center"
+                className={`glass-light rounded-2xl p-4 text-center border-t-2 ${stat.accent}`}
               >
-                <div className={`text-2xl sm:text-3xl font-bold ${stat.color} mb-1`}>
+                <div className={`text-2xl sm:text-3xl font-bold tabular-nums ${stat.color} mb-1`}>
                   {stat.value}
-                  {stat.trend === 'up' && <TrendingUp className="w-4 h-4 inline ml-1" />}
                 </div>
-                <div className="text-xs text-zinc-500">{stat.label}</div>
+                <div className="text-xs font-medium text-zinc-300 mb-0.5">{stat.label}</div>
                 {stat.subtitle && (
                   <div className="text-[10px] text-zinc-600">{stat.subtitle}</div>
                 )}
@@ -251,6 +250,10 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="text-center mb-12"
           >
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-400 text-xs font-medium mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-violet-400" />
+              1958 → Present
+            </div>
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
               The AI Timeline
             </h2>
@@ -298,11 +301,15 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="text-center mb-12"
           >
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/20 text-pink-400 text-xs font-medium mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-pink-400 animate-pulse" />
+              Live Forecasts
+            </div>
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-              Live Predictions
+              Probability Dashboard
             </h2>
             <p className="text-zinc-400 max-w-2xl mx-auto">
-              Probability estimates from forecasters and experts. Updated in real-time.
+              Aggregated from Metaculus, prediction markets, and expert surveys.
             </p>
           </motion.div>
           
@@ -311,7 +318,7 @@ export default function HomePage() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
+            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10"
           >
             <PredictionGauge
               label="AGI by 2027"
@@ -333,6 +340,20 @@ export default function HomePage() {
               probability={0.45}
               color="emerald"
             />
+          </motion.div>
+
+          {/* Live Metaculus */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+          >
+            <p className="text-xs text-zinc-600 text-center mb-3 uppercase tracking-wider">Live from Metaculus</p>
+            <div className="grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+              <LiveMetaculusWidget questionId={5121} compact />
+              <LiveMetaculusWidget questionId={3479} compact />
+            </div>
           </motion.div>
           
           <motion.div
@@ -365,6 +386,10 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="text-center mb-12"
           >
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-medium mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+              9 Leading Researchers
+            </div>
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
               Expert Perspectives
             </h2>

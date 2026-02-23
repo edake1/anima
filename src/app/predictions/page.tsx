@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Target, 
   TrendingUp, 
@@ -12,13 +12,16 @@ import {
   AlertTriangle,
   CheckCircle2,
   Info,
-  ArrowRight
+  ArrowRight,
+  Sparkles,
+  X
 } from 'lucide-react';
 import Link from 'next/link';
 import { predictions } from '@/lib/data/predictions';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { PredictionGauge } from '@/components/visualization/PredictionGauge';
+import { UserPredictionWizard } from '@/components/interactive/UserPredictionWizard';
 import { cn } from '@/lib/utils';
 import { PredictionCategory } from '@/types';
 
@@ -35,6 +38,7 @@ const categoryConfig: Record<PredictionCategory, { label: string; icon: typeof T
 export default function PredictionsPage() {
   const [selectedCategory, setSelectedCategory] = useState<PredictionCategory | null>(null);
   const [sortBy, setSortBy] = useState<'probability' | 'controversy' | 'recent'>('probability');
+  const [wizardOpen, setWizardOpen] = useState(false);
   
   const filteredPredictions = predictions
     .filter((p) => !selectedCategory || p.category === selectedCategory)
@@ -76,6 +80,21 @@ export default function PredictionsPage() {
             Live probability estimates from prediction markets, expert surveys, 
             and community forecasting. Watch how beliefs shift over time.
           </motion.p>
+
+          {/* CTA to open wizard */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <button
+              onClick={() => setWizardOpen(true)}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-violet-600/20 border border-violet-500/40 text-violet-300 hover:bg-violet-600/30 hover:border-violet-500/60 transition-all text-sm font-medium"
+            >
+              <Sparkles className="w-4 h-4" />
+              What&apos;s your AGI prediction?
+            </button>
+          </motion.div>
         </div>
       </section>
       
@@ -359,6 +378,36 @@ export default function PredictionsPage() {
           </div>
         </div>
       </section>
+
+      {/* UserPredictionWizard Modal */}
+      <AnimatePresence>
+        {wizardOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            onClick={() => setWizardOpen(false)}
+          >
+            <div className="absolute inset-0 bg-black/70 backdrop-blur-xl" />
+            <motion.div
+              initial={{ scale: 0.95, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative z-10 w-full max-w-xl"
+            >
+              <button
+                onClick={() => setWizardOpen(false)}
+                className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-white transition-colors z-20"
+              >
+                <X className="w-4 h-4" />
+              </button>
+              <UserPredictionWizard onComplete={() => setWizardOpen(false)} />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -23,3 +23,12 @@
  GET /predictions/asi-timeline 200 in 118ms (compile: 34ms, render: 84ms)
  GET /api/metaculus?id=3479 200 in 291ms (compile: 13ms, render: 278ms)
  GET /scenarios 200 in 1870ms (compile: 1736ms, render: 134ms)
+✓ Compiled in 459ms
+✓ Compiled in 244ms
+✓ Compiled in 259ms
+ GET /scenarios 200 in 179ms (compile: 37ms, render: 143ms)
+ GET /scenarios 200 in 108ms (compile: 3ms, render: 105ms)
+✓ Compiled in 17ms
+ GET /scenarios 200 in 40ms (compile: 2ms, render: 38ms)
+ GET /sources 200 in 1061ms (compile: 1047ms, render: 15ms)
+✓ Compiled in 382ms

@@ -44,6 +44,23 @@ body {
   overflow-x: hidden;
 }
 
+/* Subtle dot-grid texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(139, 92, 246, 0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ensure content stays above the texture */
+#__next, main, [data-nextjs-root] {
+  position: relative;
+  z-index: 1;
+}
+
 /* Cosmic Background */
 .cosmic-bg {
   position: fixed;

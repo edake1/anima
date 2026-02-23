@@ -1,130 +1,183 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useRef, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
 import { timelinePhases, milestones } from '@/lib/data';
+import { Milestone } from '@/types';
+
+const YEAR_START = 2017;
+const YEAR_END = 2026;
+const TOTAL_YEARS = YEAR_END - YEAR_START;
+
+const impactSize: Record<string, number> = {
+  transformative: 14,
+  high: 10,
+  medium: 7,
+  low: 5,
+};
+
+const impactColor: Record<string, string> = {
+  transformative: '#ec4899',
+  high: '#8b5cf6',
+  medium: '#6366f1',
+  low: '#4b5563',
+};
 
 export function TimelineRiver() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [, setVisibleMilestones] = useState<string[]>([]);
+  const [hovered, setHovered] = useState<Milestone | null>(null);
+  const [tooltipX, setTooltipX] = useState(0);
 
-  const years = Array.from({ length: 2035 - 2017 + 1 }, (_, i) => 2017 + i);
-  
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setVisibleMilestones((prev) => [...prev, entry.target.id]);
-          }
-        });
-      },
-      { threshold: 0.3 }
-    );
-
-    const milestoneElements = containerRef.current?.querySelectorAll('.milestone');
-    milestoneElements?.forEach((el) => observer.observe(el));
-
-    return () => observer.disconnect();
-  }, []);
+  const historicalMilestones = milestones.filter(m => {
+    const y = new Date(m.date).getFullYear();
+    return y >= YEAR_START && y <= YEAR_END && m.category !== 'prediction';
+  });
 
   return (
-    <div ref={containerRef} className="relative py-8 overflow-x-auto no-scrollbar">
-      <div className="min-w-[1200px] px-8">
-        {/* Main River */}
-        <div className="relative">
-          {/* Gradient Line */}
-          <div className="absolute top-1/2 left-0 right-0 h-2 -translate-y-1/2 rounded-full overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-violet-500 via-purple-500 via-pink-500 to-rose-500 opacity-60" />
-            <motion.div
-              animate={{ x: ['-100%', '100%'] }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
-            />
-          </div>
-          
-          {/* Year Markers */}
-          <div className="relative flex justify-between items-center py-16">
-            {years.map((year, index) => {
-              const yearMilestones = milestones.filter(
-                (m) => new Date(m.date).getFullYear() === year
-              );
-              
-              return (
-                <div key={year} className="flex flex-col items-center">
-                  {/* Year Label */}
-                  <span className="text-xs text-zinc-500 mb-4">{year}</span>
-                  
-                  {/* Node */}
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: index * 0.05 }}
-                    className={`relative w-4 h-4 rounded-full ${
-                      yearMilestones.length > 0
-                        ? 'bg-violet-500 shadow-lg shadow-violet-500/50'
-                        : 'bg-zinc-700'
-                    }`}
-                  >
-                    {yearMilestones.length > 0 && (
-                      <span className="absolute -top-1 -right-1 w-3 h-3 bg-pink-500 rounded-full text-[8px] flex items-center justify-center text-white font-bold">
-                        {yearMilestones.length}
-                      </span>
-                    )}
-                  </motion.div>
-                  
-                  {/* Milestone Labels */}
-                  {yearMilestones.length > 0 && (
-                    <div className="absolute top-full mt-6 flex flex-col gap-2">
-                      {yearMilestones.slice(0, 2).map((m) => (
-                        <div
-                          key={m.id}
-                          className="w-32 text-center"
-                        >
-                          <span className="text-[10px] text-zinc-400 line-clamp-2">
-                            {m.title}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-          
-          {/* Phase Indicators */}
-          <div className="relative flex justify-between mt-4">
-            {timelinePhases.map((phase, index) => {
-              const startOffset = ((phase.startYear - 2017) / (2035 - 2017)) * 100;
-              const width = phase.endYear 
-                ? ((phase.endYear - phase.startYear) / (2035 - 2017)) * 100
-                : ((2035 - phase.startYear) / (2035 - 2017)) * 100;
-              
-              return (
+    <div ref={containerRef} className="relative py-6 overflow-x-auto no-scrollbar select-none">
+      <div className="min-w-[700px] px-6">
+
+        {/* Phase color band */}
+        <div className="relative h-1.5 rounded-full overflow-hidden mb-1">
+          {timelinePhases.filter(p => p.startYear <= YEAR_END).map((phase) => {
+            const left = Math.max(0, ((phase.startYear - YEAR_START) / TOTAL_YEARS)) * 100;
+            const right = phase.endYear
+              ? Math.min(100, ((phase.endYear - YEAR_START) / TOTAL_YEARS) * 100)
+              : 100;
+            return (
+              <div
+                key={phase.id}
+                className="absolute top-0 bottom-0 rounded-full"
+                style={{
+                  left: `${left}%`,
+                  width: `${right - left}%`,
+                  backgroundColor: phase.color,
+                  opacity: 0.7,
+                }}
+              />
+            );
+          })}
+          {/* shimmer */}
+          <motion.div
+            animate={{ x: ['-100%', '200%'] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: 'linear', repeatDelay: 1 }}
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent w-1/3"
+          />
+        </div>
+
+        {/* River track & nodes */}
+        <div className="relative h-16">
+          {/* Center line */}
+          <div className="absolute top-1/2 left-0 right-0 h-px bg-zinc-800 -translate-y-1/2" />
+
+          {historicalMilestones.map((m, i) => {
+            const year = new Date(m.date).getFullYear();
+            const month = new Date(m.date).getMonth();
+            const pct = ((year - YEAR_START + month / 12) / TOTAL_YEARS) * 100;
+            const size = impactSize[m.impact] ?? 7;
+            const color = impactColor[m.impact] ?? '#6366f1';
+            const isHovered = hovered?.id === m.id;
+
+            return (
+              <motion.div
+                key={m.id}
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: i * 0.02, type: 'spring', stiffness: 300, damping: 20 }}
+                onMouseEnter={(e) => {
+                  setHovered(m);
+                  const rect = containerRef.current?.getBoundingClientRect();
+                  const el = e.currentTarget.getBoundingClientRect();
+                  setTooltipX(el.left - (rect?.left ?? 0) + el.width / 2);
+                }}
+                onMouseLeave={() => setHovered(null)}
+                className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 cursor-pointer z-10"
+                style={{ left: `${pct}%` }}
+              >
                 <motion.div
-                  key={phase.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 + index * 0.1 }}
-                  className="absolute text-center"
-                  style={{ 
-                    left: `${startOffset}%`, 
-                    width: `${Math.max(width, 10)}%` 
+                  animate={isHovered ? { scale: 1.6 } : { scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                  className="rounded-full"
+                  style={{
+                    width: size,
+                    height: size,
+                    backgroundColor: color,
+                    boxShadow: isHovered ? `0 0 12px ${color}cc` : `0 0 4px ${color}66`,
                   }}
-                >
-                  <div 
-                    className="h-1 rounded-full mb-2"
-                    style={{ backgroundColor: phase.color }}
+                />
+                {/* year tick for transformative */}
+                {m.impact === 'transformative' && (
+                  <div
+                    className="absolute left-1/2 -translate-x-1/2 w-px h-3 bg-pink-500/40"
+                    style={{ top: '100%', marginTop: 2 }}
                   />
-                  <span className="text-[10px] text-zinc-500 uppercase tracking-wider">
-                    {phase.shortName}
-                  </span>
-                </motion.div>
-              );
-            })}
+                )}
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Year labels */}
+        <div className="relative flex justify-between px-0 mt-1">
+          {Array.from({ length: TOTAL_YEARS + 1 }, (_, i) => YEAR_START + i).map((yr) => (
+            <span key={yr} className="text-[10px] text-zinc-600 font-mono">
+              {yr}
+            </span>
+          ))}
+        </div>
+
+        {/* Phase legend row */}
+        <div className="flex flex-wrap gap-x-5 gap-y-1 mt-4">
+          {timelinePhases.filter(p => p.startYear <= YEAR_END).map((phase) => (
+            <div key={phase.id} className="flex items-center gap-1.5">
+              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: phase.color }} />
+              <span className="text-[10px] text-zinc-500">{phase.shortName}</span>
+            </div>
+          ))}
+          <div className="ml-auto flex items-center gap-3">
+            {['transformative', 'high', 'medium'].map((imp) => (
+              <div key={imp} className="flex items-center gap-1">
+                <div
+                  className="rounded-full"
+                  style={{
+                    width: impactSize[imp],
+                    height: impactSize[imp],
+                    backgroundColor: impactColor[imp],
+                  }}
+                />
+                <span className="text-[10px] text-zinc-600 capitalize">{imp}</span>
+              </div>
+            ))}
           </div>
         </div>
+
+        {/* Tooltip */}
+        <AnimatePresence>
+          {hovered && (
+            <motion.div
+              key={hovered.id}
+              initial={{ opacity: 0, y: 6, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 4, scale: 0.96 }}
+              transition={{ duration: 0.15 }}
+              className="absolute z-50 pointer-events-none"
+              style={{
+                bottom: '100%',
+                left: Math.min(Math.max(tooltipX, 80), 600),
+                transform: 'translateX(-50%)',
+                marginBottom: 8,
+              }}
+            >
+              <Link href={`/timeline/${hovered.id}`} className="pointer-events-auto block">
+                <div className="glass rounded-xl px-4 py-3 max-w-[220px] shadow-xl border border-violet-500/20">
+                  <p className="text-xs font-semibold text-white mb-0.5 line-clamp-2">{hovered.title}</p>
+                  <p className="text-[10px] text-zinc-400">{new Date(hovered.date).getFullYear()} · {hovered.impact} impact</p>
+                </div>
+              </Link>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

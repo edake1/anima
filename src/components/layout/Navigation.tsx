@@ -20,6 +20,7 @@ import {
 import { useStore } from '@/lib/stores/useStore';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { ModeBadge } from '@/components/interactive/ModeAwareContent';
 
 const navItems = [
   { href: '/', label: 'Portal', icon: Home },
@@ -106,9 +107,8 @@ export function Navigation() {
             {/* Right Section */}
             <div className="flex items-center gap-2">
               {/* Mode Badge */}
-              <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full glass-light">
-                <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-xs text-zinc-400 capitalize">{mode}</span>
+              <div className="hidden sm:block">
+                <ModeBadge />
               </div>
               
               {/* Mobile Menu Button */}
