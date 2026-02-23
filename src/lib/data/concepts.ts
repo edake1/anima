@@ -20,7 +20,7 @@ export const concepts: Concept[] = [
       { conceptId: 'scaling-laws', relationship: 'related', strength: 0.7 }
     ],
     sources: [
-      { id: 'attention-paper', type: 'paper', title: 'Attention Is All You Need', authors: ['Vaswani et al.'], publishDate: '2017-06-12', credibility: 99 }
+      { id: 'attention-paper', type: 'paper', title: 'Attention Is All You Need', authors: ['Vaswani et al.'], url: 'https://arxiv.org/abs/1706.03762', publishDate: '2017-06-12', credibility: 99 }
     ]
   },
   {
@@ -35,7 +35,7 @@ export const concepts: Concept[] = [
       { conceptId: 'context-window', relationship: 'related', strength: 0.8 }
     ],
     sources: [
-      { id: 'attention-paper-2', type: 'paper', title: 'Attention Is All You Need', credibility: 99 }
+      { id: 'attention-paper-2', type: 'paper', title: 'Attention Is All You Need', url: 'https://arxiv.org/abs/1706.03762', credibility: 99 }
     ]
   },
   {
@@ -50,7 +50,7 @@ export const concepts: Concept[] = [
       { conceptId: 'transformers', relationship: 'related', strength: 0.7 }
     ],
     sources: [
-      { id: 'nn-intro', type: 'article', title: 'Neural Networks Introduction', credibility: 80 }
+      { id: 'nn-intro', type: 'article', title: 'Neural Networks and Deep Learning', url: 'http://neuralnetworksanddeeplearning.com', credibility: 80 }
     ]
   },
   {
@@ -65,7 +65,7 @@ export const concepts: Concept[] = [
       { conceptId: 'backpropagation', relationship: 'requires', strength: 0.9 }
     ],
     sources: [
-      { id: 'deeplearning-book', type: 'book', title: 'Deep Learning', authors: ['Goodfellow', 'Bengio', 'Courville'], credibility: 95 }
+      { id: 'deeplearning-book', type: 'book', title: 'Deep Learning', authors: ['Goodfellow', 'Bengio', 'Courville'], url: 'https://www.deeplearningbook.org', credibility: 95 }
     ]
   },
   
@@ -82,7 +82,7 @@ export const concepts: Concept[] = [
       { conceptId: 'agi', relationship: 'related', strength: 0.9 }
     ],
     sources: [
-      { id: 'cot-paper', type: 'paper', title: 'Chain-of-Thought Prompting', credibility: 90 }
+      { id: 'cot-paper', type: 'paper', title: 'Chain-of-Thought Prompting Elicits Reasoning', url: 'https://arxiv.org/abs/2201.11903', credibility: 90 }
     ]
   },
   {
@@ -97,7 +97,7 @@ export const concepts: Concept[] = [
       { conceptId: 'prompt-engineering', relationship: 'related', strength: 0.8 }
     ],
     sources: [
-      { id: 'cot-paper-2', type: 'paper', title: 'Chain-of-Thought Prompting Elicits Reasoning', credibility: 90 }
+      { id: 'cot-paper-2', type: 'paper', title: 'Chain-of-Thought Prompting Elicits Reasoning', url: 'https://arxiv.org/abs/2201.11903', credibility: 90 }
     ]
   },
   {
@@ -112,7 +112,7 @@ export const concepts: Concept[] = [
       { conceptId: 'agi', relationship: 'related', strength: 0.8 }
     ],
     sources: [
-      { id: 'emergence-paper', type: 'paper', title: 'Emergent Abilities of Large Language Models', credibility: 85 }
+      { id: 'emergence-paper', type: 'paper', title: 'Emergent Abilities of Large Language Models', url: 'https://arxiv.org/abs/2206.07682', credibility: 85 }
     ]
   },
   {
@@ -127,7 +127,7 @@ export const concepts: Concept[] = [
       { conceptId: 'transformers', relationship: 'related', strength: 0.7 }
     ],
     sources: [
-      { id: 'scaling-paper', type: 'paper', title: 'Scaling Laws for Neural Language Models', credibility: 90 }
+      { id: 'scaling-paper', type: 'paper', title: 'Scaling Laws for Neural Language Models', url: 'https://arxiv.org/abs/2001.08361', credibility: 90 }
     ]
   },
   {
@@ -142,7 +142,7 @@ export const concepts: Concept[] = [
       { conceptId: 'agi', relationship: 'related', strength: 0.75 }
     ],
     sources: [
-      { id: 'gpt4v-paper', type: 'paper', title: 'GPT-4V Technical Report', credibility: 90 }
+      { id: 'gpt4v-paper', type: 'paper', title: 'GPT-4V Technical Report', url: 'https://arxiv.org/abs/2303.08774', credibility: 90 }
     ]
   },
   {
@@ -157,7 +157,7 @@ export const concepts: Concept[] = [
       { conceptId: 'ai-agents', relationship: 'enables', strength: 0.85 }
     ],
     sources: [
-      { id: 'world-model-jept', type: 'paper', title: 'JEPA World Models', credibility: 80 }
+      { id: 'world-model-jept', type: 'paper', title: 'A Path Towards Autonomous Machine Intelligence (JEPA)', url: 'https://openreview.net/pdf?id=BZ5a1r-kVsf', credibility: 80 }
     ]
   },
   
@@ -174,7 +174,7 @@ export const concepts: Concept[] = [
       { conceptId: 'tool-use', relationship: 'requires', strength: 0.8 }
     ],
     sources: [
-      { id: 'agent-survey', type: 'paper', title: 'AI Agents Survey', credibility: 80 }
+      { id: 'agent-survey', type: 'paper', title: 'A Survey on Large Language Model based Autonomous Agents', url: 'https://arxiv.org/abs/2308.11432', credibility: 80 }
     ]
   },
   {
@@ -189,7 +189,7 @@ export const concepts: Concept[] = [
       { conceptId: 'emergence', relationship: 'related', strength: 0.8 }
     ],
     sources: [
-      { id: 'mas-paper', type: 'paper', title: 'Multi-Agent Systems Research', credibility: 75 }
+      { id: 'mas-paper', type: 'paper', title: 'Communicative Agents for Software Development', url: 'https://arxiv.org/abs/2307.07924', credibility: 75 }
     ]
   },
   
@@ -206,7 +206,7 @@ export const concepts: Concept[] = [
       { conceptId: 'rlhf', relationship: 'related', strength: 0.8 }
     ],
     sources: [
-      { id: 'alignment-book', type: 'book', title: 'Human Compatible', authors: ['Stuart Russell'], credibility: 90 }
+      { id: 'alignment-book', type: 'book', title: 'Human Compatible', authors: ['Stuart Russell'], url: 'https://www.amazon.com/dp/0525558616', credibility: 90 }
     ]
   },
   {
@@ -221,7 +221,7 @@ export const concepts: Concept[] = [
       { conceptId: 'constitutional-ai', relationship: 'related', strength: 0.75 }
     ],
     sources: [
-      { id: 'rlhf-paper', type: 'paper', title: 'Training language models to follow instructions', credibility: 90 }
+      { id: 'rlhf-paper', type: 'paper', title: 'Training language models to follow instructions with human feedback', url: 'https://arxiv.org/abs/2203.02155', credibility: 90 }
     ]
   },
   {
@@ -236,7 +236,7 @@ export const concepts: Concept[] = [
       { conceptId: 'rlhf', relationship: 'related', strength: 0.8 }
     ],
     sources: [
-      { id: 'cai-paper', type: 'paper', title: 'Constitutional AI', credibility: 90 }
+      { id: 'cai-paper', type: 'paper', title: 'Constitutional AI: Harmlessness from AI Feedback', url: 'https://arxiv.org/abs/2212.08073', credibility: 90 }
     ]
   },
   {
@@ -251,7 +251,7 @@ export const concepts: Concept[] = [
       { conceptId: 'asi', relationship: 'related', strength: 0.95 }
     ],
     sources: [
-      { id: 'xrisk-paper', type: 'paper', title: 'Existential Risk from AI', credibility: 75 }
+      { id: 'xrisk-paper', type: 'paper', title: 'An Overview of Catastrophic AI Risks', url: 'https://arxiv.org/abs/2306.12001', credibility: 75 }
     ]
   },
   
@@ -269,7 +269,7 @@ export const concepts: Concept[] = [
       { conceptId: 'world-models', relationship: 'requires', strength: 0.8 }
     ],
     sources: [
-      { id: 'agi-overview', type: 'article', title: 'AGI Overview', credibility: 75 }
+      { id: 'agi-overview', type: 'article', title: 'Sparks of Artificial General Intelligence', url: 'https://arxiv.org/abs/2303.12528', credibility: 75 }
     ]
   },
   {
@@ -285,7 +285,7 @@ export const concepts: Concept[] = [
       { conceptId: 'singularity', relationship: 'related', strength: 0.85 }
     ],
     sources: [
-      { id: 'superintelligence-book', type: 'book', title: 'Superintelligence', authors: ['Nick Bostrom'], credibility: 80 }
+      { id: 'superintelligence-book', type: 'book', title: 'Superintelligence: Paths, Dangers, Strategies', authors: ['Nick Bostrom'], url: 'https://www.amazon.com/dp/0199678111', credibility: 80 }
     ]
   },
   {
@@ -300,7 +300,7 @@ export const concepts: Concept[] = [
       { conceptId: 'intelligence-explosion', relationship: 'related', strength: 0.85 }
     ],
     sources: [
-      { id: 'singularity-book', type: 'book', title: 'The Singularity Is Near', authors: ['Ray Kurzweil'], credibility: 75 }
+      { id: 'singularity-book', type: 'book', title: 'The Singularity Is Near', authors: ['Ray Kurzweil'], url: 'https://www.amazon.com/dp/0143037889', credibility: 75 }
     ]
   },
   {
@@ -315,7 +315,7 @@ export const concepts: Concept[] = [
       { conceptId: 'singularity', relationship: 'related', strength: 0.85 }
     ],
     sources: [
-      { id: 'ij-good', type: 'paper', title: 'Speculations Concerning the First Ultraintelligent Machine', credibility: 80 }
+      { id: 'ij-good', type: 'paper', title: 'Speculations Concerning the First Ultraintelligent Machine', authors: ['I.J. Good'], url: 'https://doi.org/10.1016/S0065-2458(08)60418-0', credibility: 80 }
     ]
   }
 ];

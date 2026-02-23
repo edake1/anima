@@ -2,8 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { getConceptGraph } from '@/lib/data/concepts';
-import { concepts } from '@/lib/data/concepts';
+import { getConceptGraph, concepts } from '@/lib/data/concepts';
 
 // ─── Visual config ────────────────────────────────────────────────────────────
 
@@ -31,7 +30,7 @@ const CAT_ORDER = ['architecture', 'capability', 'safety', 'philosophy', 'econom
 
 // ─── Layout math ──────────────────────────────────────────────────────────────
 
-const W = 860, H = 660, CX = 430, CY = 330, R_CLUSTER = 240, R_NODE = 66;
+const W = 860, H = 660, CX = 430, CY = 330, R_CLUSTER = 235, R_NODE = 70;
 
 interface Point { x: number; y: number }
 
@@ -60,6 +59,18 @@ function buildLayout(): { positions: Record<string, Point>; centroids: Record<st
   });
 
   return { positions, centroids };
+}
+
+// Compute curved bezier path that gently arcs toward the center of the graph
+function curvePath(from: Point, to: Point, pull = 28): string {
+  const mx = (from.x + to.x) / 2;
+  const my = (from.y + to.y) / 2;
+  const dx = CX - mx;
+  const dy = CY - my;
+  const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+  const cpx = mx + (dx / dist) * pull;
+  const cpy = my + (dy / dist) * pull;
+  return `M ${from.x} ${from.y} Q ${cpx} ${cpy} ${to.x} ${to.y}`;
 }
 
 // Deduplicate bidirectional links — keep one line per pair, highest strength wins
@@ -102,38 +113,53 @@ export function ConceptGraph() {
           className="w-full"
           style={{ minWidth: 560, display: 'block' }}
         >
-          {/* Radial guide lines from center to category centroids */}
+          <defs>
+            {/* Radial gradient halos for each category cluster */}
+            {CAT_ORDER.map(cat => (
+              <radialGradient key={`grad-${cat}`} id={`grad-${cat}`} cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor={CAT_COLOR[cat]} stopOpacity="0.13" />
+                <stop offset="70%" stopColor={CAT_COLOR[cat]} stopOpacity="0.04" />
+                <stop offset="100%" stopColor={CAT_COLOR[cat]} stopOpacity="0" />
+              </radialGradient>
+            ))}
+          </defs>
+
+          {/* Category cluster halos */}
           {CAT_ORDER.map(cat => {
             const c = centroids[cat];
             if (!c) return null;
+            const anyConnected = concepts.filter(n => n.category === cat).some(n => connectedSet.has(n.id));
             return (
-              <line
-                key={`guide-${cat}`}
-                x1={CX} y1={CY}
-                x2={c.x} y2={c.y}
-                stroke={CAT_COLOR[cat]}
-                strokeOpacity={0.06}
-                strokeWidth={1}
+              <ellipse
+                key={`halo-${cat}`}
+                cx={c.x}
+                cy={c.y}
+                rx={100}
+                ry={100}
+                fill={`url(#grad-${cat})`}
+                opacity={hovered && !anyConnected ? 0.2 : 1}
+                style={{ transition: 'opacity 0.25s' }}
               />
             );
           })}
 
-          {/* Connection lines */}
+          {/* Connection lines — curved bezier */}
           {links.map(link => {
             const from = positions[link.source];
             const to = positions[link.target];
             if (!from || !to) return null;
             const active = !hovered || (connectedSet.has(link.source) && connectedSet.has(link.target));
-            const color = active && hovered ? CAT_COLOR[concepts.find(c => c.id === link.source)?.category ?? ''] ?? '#8b5cf6' : '#3f3f46';
+            const srcCat = concepts.find(c => c.id === link.source)?.category ?? '';
+            const color = active && hovered ? (CAT_COLOR[srcCat] ?? '#8b5cf6') : '#52525b';
             return (
-              <line
+              <path
                 key={`${link.source}--${link.target}`}
-                x1={from.x} y1={from.y}
-                x2={to.x} y2={to.y}
+                d={curvePath(from, to)}
                 stroke={color}
-                strokeWidth={link.strength * 2}
-                strokeOpacity={active ? (hovered ? 0.65 : 0.22) : 0.05}
-                style={{ transition: 'stroke-opacity 0.2s, stroke 0.2s' }}
+                strokeWidth={link.strength * 1.8}
+                strokeOpacity={active ? (hovered ? 0.72 : 0.18) : 0.04}
+                fill="none"
+                style={{ transition: 'stroke-opacity 0.22s, stroke 0.22s' }}
               />
             );
           })}
@@ -142,6 +168,8 @@ export function ConceptGraph() {
           {CAT_ORDER.map(cat => {
             const c = centroids[cat];
             if (!c) return null;
+            const anyConnected = concepts.filter(n => n.category === cat).some(n => connectedSet.has(n.id));
+            const dimmed = !!hovered && !anyConnected;
             return (
               <text
                 key={`label-${cat}`}
@@ -149,11 +177,11 @@ export function ConceptGraph() {
                 y={c.y}
                 textAnchor="middle"
                 fill={CAT_COLOR[cat]}
-                fillOpacity={hovered ? 0.25 : 0.45}
-                fontSize={9}
+                fillOpacity={dimmed ? 0.12 : hovered ? 0.55 : 0.40}
+                fontSize={8.5}
                 fontWeight={700}
                 fontFamily="Inter, system-ui, sans-serif"
-                style={{ textTransform: 'uppercase', letterSpacing: '0.08em', pointerEvents: 'none', transition: 'fill-opacity 0.2s' }}
+                style={{ textTransform: 'uppercase', letterSpacing: '0.1em', pointerEvents: 'none', transition: 'fill-opacity 0.22s' }}
               >
                 {CAT_LABEL[cat]}
               </text>
@@ -170,9 +198,13 @@ export function ConceptGraph() {
             const isConnected = connectedSet.has(concept.id);
             const dim = hovered !== null && !isHovered && !isConnected;
 
-            // Node radius scales with connection count
             const r = Math.min(5 + concept.connections.length * 0.9, 9);
             const displayR = isHovered ? r + 4 : r;
+
+            // Label: always rendered, opacity + size driven by state
+            const labelOpacity = dim ? 0 : isHovered ? 1 : isConnected && hovered ? 0.9 : hovered ? 0 : 0.42;
+            const labelSize = isHovered ? 10.5 : isConnected && hovered ? 9.5 : 8;
+            const labelBgOpacity = dim ? 0 : isHovered ? 0.85 : isConnected && hovered ? 0.75 : hovered ? 0 : 0.55;
 
             return (
               <g
@@ -183,62 +215,49 @@ export function ConceptGraph() {
                 onClick={() => router.push(`/concepts/${concept.id}`)}
                 style={{ cursor: 'pointer' }}
               >
-                {/* Glow ring on hover */}
+                {/* Outer glow on hover */}
                 {isHovered && (
-                  <circle
-                    r={displayR + 6}
-                    fill={color}
-                    fillOpacity={0.18}
-                  />
+                  <circle r={displayR + 8} fill={color} fillOpacity={0.15} />
                 )}
-
-                {/* Connected ring on hover (secondary nodes) */}
+                {/* Pulse ring for connected nodes */}
                 {isConnected && !isHovered && hovered && (
-                  <circle
-                    r={r + 3}
-                    fill="none"
-                    stroke={color}
-                    strokeWidth={1}
-                    strokeOpacity={0.5}
-                  />
+                  <circle r={r + 4} fill="none" stroke={color} strokeWidth={1} strokeOpacity={0.45} />
                 )}
-
                 {/* Main dot */}
                 <circle
                   r={displayR}
                   fill={color}
-                  fillOpacity={dim ? 0.12 : isHovered ? 1 : isConnected && hovered ? 0.95 : 0.75}
-                  stroke={isHovered ? 'white' : 'none'}
-                  strokeWidth={isHovered ? 1.5 : 0}
+                  fillOpacity={dim ? 0.1 : isHovered ? 1 : isConnected && hovered ? 0.95 : 0.72}
+                  stroke={isHovered ? 'white' : isConnected && hovered ? color : 'none'}
+                  strokeWidth={isHovered ? 1.5 : 1}
+                  strokeOpacity={isHovered ? 1 : 0.5}
                   style={{ transition: 'all 0.18s ease' }}
                 />
-
-                {/* Name label — always show for hovered, show for high-connection nodes */}
-                {(isHovered || (!dim && concept.connections.length >= 4)) && (
-                  <>
-                    <rect
-                      x={-concept.name.length * 3.1}
-                      y={-displayR - 18}
-                      width={concept.name.length * 6.2}
-                      height={13}
-                      rx={3}
-                      fill="rgba(3,0,20,0.85)"
-                      style={{ pointerEvents: 'none' }}
-                    />
-                    <text
-                      y={-displayR - 8}
-                      textAnchor="middle"
-                      fill={isHovered ? 'white' : color}
-                      fillOpacity={isHovered ? 1 : 0.7}
-                      fontSize={isHovered ? 10.5 : 9}
-                      fontWeight={isHovered ? 700 : 600}
-                      fontFamily="Inter, system-ui, sans-serif"
-                      style={{ pointerEvents: 'none' }}
-                    >
-                      {concept.name}
-                    </text>
-                  </>
-                )}
+                {/* Node name — always rendered, opacity driven by hover state */}
+                <g style={{ pointerEvents: 'none' }}>
+                  <rect
+                    x={-concept.name.length * (labelSize * 0.31)}
+                    y={-displayR - 14}
+                    width={concept.name.length * (labelSize * 0.62)}
+                    height={12}
+                    rx={3}
+                    fill="rgba(3,0,20,0.75)"
+                    fillOpacity={labelBgOpacity}
+                    style={{ transition: 'fill-opacity 0.2s' }}
+                  />
+                  <text
+                    y={-displayR - 5}
+                    textAnchor="middle"
+                    fill={isHovered ? 'white' : isConnected && hovered ? '#e2e8f0' : color}
+                    fillOpacity={labelOpacity}
+                    fontSize={labelSize}
+                    fontWeight={isHovered ? 700 : 500}
+                    fontFamily="Inter, system-ui, sans-serif"
+                    style={{ transition: 'fill-opacity 0.2s', pointerEvents: 'none' }}
+                  >
+                    {concept.name}
+                  </text>
+                </g>
               </g>
             );
           })}
@@ -246,7 +265,7 @@ export function ConceptGraph() {
       </div>
 
       {/* Info panel */}
-      <div className="h-24 glass rounded-2xl border border-violet-500/10 flex items-center px-6 gap-5 transition-all">
+      <div className="min-h-[72px] glass rounded-2xl border border-violet-500/10 flex items-center px-6 gap-5" style={{ transition: 'all 0.2s' }}>
         {hoveredConcept ? (
           <>
             <div

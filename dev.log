@@ -188,3 +188,26 @@
  GET /concepts 200 in 47ms (compile: 32ms, render: 16ms)
  GET /concepts/multi-agent-systems 200 in 16ms (compile: 6ms, render: 10ms)
 ✓ Compiled in 203ms
+ GET /concepts 200 in 75ms (compile: 49ms, render: 26ms)
+ GET /concepts/deep-learning 200 in 33ms (compile: 10ms, render: 23ms)
+ GET /concepts 200 in 10ms (compile: 1453µs, render: 9ms)
+ GET /concepts/attention-mechanism 200 in 39ms (compile: 8ms, render: 32ms)
+ GET /concepts/deep-learning 200 in 12ms (compile: 4ms, render: 9ms)
+ GET /concepts/agi 200 in 25ms (compile: 7ms, render: 18ms)
+ GET /concepts 200 in 12ms (compile: 1917µs, render: 10ms)
+ GET / 200 in 73ms (compile: 50ms, render: 23ms)
+ GET /api/metaculus?id=5121 200 in 298ms (compile: 5ms, render: 293ms)
+ GET /api/metaculus?id=3479 200 in 300ms (compile: 42ms, render: 258ms)
+ GET /timeline 200 in 213ms (compile: 177ms, render: 36ms)
+ GET / 200 in 48ms (compile: 8ms, render: 40ms)
+ GET /api/metaculus?id=5121 200 in 43ms (compile: 31ms, render: 12ms)
+ GET /api/metaculus?id=3479 200 in 40ms (compile: 15ms, render: 25ms)
+ GET /scenarios 200 in 582ms (compile: 385ms, render: 198ms)
+✓ Compiled in 30ms
+✓ Compiled in 517ms
+ GET / 200 in 414ms (compile: 251ms, render: 163ms)
+ GET /api/metaculus?id=5121 200 in 17ms (compile: 3ms, render: 14ms)
+ GET /api/metaculus?id=3479 200 in 42ms (compile: 35ms, render: 8ms)
+ GET /concepts 200 in 544ms (compile: 212ms, render: 332ms)
+✓ Compiled in 266ms
+✓ Compiled in 52ms

@@ -106,18 +106,29 @@ export default function ConceptDetailPage({ params }: Props) {
               >
                 <h2 className="text-sm font-semibold text-zinc-300 uppercase tracking-wide mb-4">Sources</h2>
                 <ul className="space-y-3">
-                  {concept.sources.map(src => (
-                    <li key={src.id} className="flex items-start gap-3 group">
-                      <ExternalLink className="w-4 h-4 text-zinc-600 mt-0.5 group-hover:text-violet-400 transition-colors shrink-0" />
-                      <div className="min-w-0">
-                        <p className="text-sm text-zinc-300 font-medium">{src.title}</p>
-                        {src.authors && src.authors.length > 0 && (
-                          <p className="text-xs text-zinc-500 mt-0.5">{src.authors.join(', ')}</p>
-                        )}
-                        <p className="text-xs text-zinc-600 mt-0.5 capitalize">{src.type} · Credibility {src.credibility}/100</p>
+                  {concept.sources.map(src => {
+                    const inner = (
+                      <div className="flex items-start gap-3 group">
+                        <ExternalLink className={`w-4 h-4 mt-0.5 shrink-0 transition-colors ${src.url ? 'text-zinc-500 group-hover:text-violet-400' : 'text-zinc-700'}`} />
+                        <div className="min-w-0">
+                          <p className={`text-sm font-medium transition-colors ${src.url ? 'text-zinc-300 group-hover:text-white' : 'text-zinc-400'}`}>{src.title}</p>
+                          {src.authors && src.authors.length > 0 && (
+                            <p className="text-xs text-zinc-500 mt-0.5">{src.authors.join(', ')}</p>
+                          )}
+                          <p className="text-xs text-zinc-600 mt-0.5 capitalize">{src.type} · Credibility {src.credibility}/100</p>
+                        </div>
                       </div>
-                    </li>
-                  ))}
+                    );
+                    return (
+                      <li key={src.id}>
+                        {src.url ? (
+                          <a href={src.url} target="_blank" rel="noopener noreferrer" className="block rounded-xl hover:bg-violet-500/5 -mx-2 px-2 py-1 transition-colors">
+                            {inner}
+                          </a>
+                        ) : inner}
+                      </li>
+                    );
+                  })}
                 </ul>
               </motion.div>
             )}
