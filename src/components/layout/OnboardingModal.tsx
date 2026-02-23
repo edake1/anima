@@ -68,7 +68,7 @@ export function OnboardingModal() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+        className="fixed inset-0 z-[100] flex items-start sm:items-center justify-center p-4 overflow-y-auto"
       >
         {/* Backdrop */}
         <motion.div
@@ -82,11 +82,11 @@ export function OnboardingModal() {
           initial={{ scale: 0.9, opacity: 0, y: 20 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="relative w-full max-w-4xl glass rounded-3xl border border-violet-500/20 overflow-hidden"
+          className="relative w-full max-w-4xl glass rounded-3xl border border-violet-500/20 my-4"
         >
           {step === 0 ? (
             // Welcome Step
-            <div className="p-8 sm:p-12 text-center">
+            <div className="p-6 sm:p-12 text-center">
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
@@ -152,8 +152,8 @@ export function OnboardingModal() {
             </div>
           ) : (
             // Mode Selection Step
-            <div className="p-8 sm:p-12">
-              <div className="text-center mb-8">
+            <div className="p-5 sm:p-10">
+              <div className="text-center mb-5 sm:mb-8">
                 <motion.h2
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -171,7 +171,7 @@ export function OnboardingModal() {
                 </motion.p>
               </div>
               
-              <div className="grid sm:grid-cols-2 gap-4 mb-8">
+              <div className="grid sm:grid-cols-2 gap-3 sm:gap-4 mb-5 sm:mb-8">
                 {modes.map((mode, index) => {
                   const Icon = mode.icon;
                   const isSelected = selectedMode === mode.id;
@@ -184,7 +184,7 @@ export function OnboardingModal() {
                       transition={{ delay: 0.1 * (index + 1) }}
                       onClick={() => handleSelectMode(mode.id)}
                       className={cn(
-                        'relative p-6 rounded-2xl text-left transition-all duration-300',
+                        'relative p-4 sm:p-6 rounded-2xl text-left transition-all duration-300',
                         'border hover:scale-[1.02]',
                         isSelected
                           ? 'bg-violet-500/20 border-violet-500/50 shadow-lg shadow-violet-500/20'
@@ -202,14 +202,14 @@ export function OnboardingModal() {
                       )}
                       
                       <div className={cn(
-                        'w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center mb-4',
+                        'w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br flex items-center justify-center mb-3',
                         mode.color
                       )}>
-                        <Icon className="w-6 h-6 text-white" />
+                        <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                       </div>
                       
-                      <h3 className="text-xl font-bold text-white mb-2">{mode.name}</h3>
-                      <p className="text-sm text-zinc-400 mb-4">{mode.description}</p>
+                      <h3 className="text-lg sm:text-xl font-bold text-white mb-1 sm:mb-2">{mode.name}</h3>
+                      <p className="text-sm text-zinc-400 mb-3">{mode.description}</p>
                       
                       <div className="flex flex-wrap gap-2">
                         {mode.features.map((feature) => (
