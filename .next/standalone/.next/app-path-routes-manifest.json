@@ -1,0 +1,17 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/about/page": "/about",
+  "/api/metaculus/route": "/api/metaculus",
+  "/api/route": "/api",
+  "/concepts/page": "/concepts",
+  "/experts/[id]/page": "/experts/[id]",
+  "/experts/page": "/experts",
+  "/page": "/",
+  "/predictions/[id]/page": "/predictions/[id]",
+  "/predictions/page": "/predictions",
+  "/scenarios/page": "/scenarios",
+  "/sources/page": "/sources",
+  "/timeline/[id]/page": "/timeline/[id]",
+  "/timeline/page": "/timeline"
+}

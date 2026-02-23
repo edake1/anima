@@ -1,0 +1,141 @@
+{
+  "version": 3,
+  "pages404": true,
+  "appType": "app",
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/experts/[id]",
+      "regex": "^/experts/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/experts/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/predictions/[id]",
+      "regex": "^/predictions/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/predictions/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/timeline/[id]",
+      "regex": "^/timeline/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/timeline/(?<nxtPid>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/about",
+      "regex": "^/about(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/about(?:/)?$"
+    },
+    {
+      "page": "/api",
+      "regex": "^/api(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api(?:/)?$"
+    },
+    {
+      "page": "/api/metaculus",
+      "regex": "^/api/metaculus(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/metaculus(?:/)?$"
+    },
+    {
+      "page": "/concepts",
+      "regex": "^/concepts(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/concepts(?:/)?$"
+    },
+    {
+      "page": "/experts",
+      "regex": "^/experts(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/experts(?:/)?$"
+    },
+    {
+      "page": "/predictions",
+      "regex": "^/predictions(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/predictions(?:/)?$"
+    },
+    {
+      "page": "/scenarios",
+      "regex": "^/scenarios(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/scenarios(?:/)?$"
+    },
+    {
+      "page": "/sources",
+      "regex": "^/sources(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/sources(?:/)?$"
+    },
+    {
+      "page": "/timeline",
+      "regex": "^/timeline(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/timeline(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

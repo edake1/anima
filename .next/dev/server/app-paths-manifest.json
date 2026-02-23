@@ -1,0 +1,10 @@
+{
+  "/api/metaculus/route": "app/api/metaculus/route.js",
+  "/concepts/page": "app/concepts/page.js",
+  "/experts/[id]/page": "app/experts/[id]/page.js",
+  "/experts/page": "app/experts/page.js",
+  "/page": "app/page.js",
+  "/predictions/[id]/page": "app/predictions/[id]/page.js",
+  "/predictions/page": "app/predictions/page.js",
+  "/timeline/page": "app/timeline/page.js"
+}
