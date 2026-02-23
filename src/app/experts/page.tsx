@@ -262,7 +262,7 @@ export default function ExpertsPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto"
+            className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-4 overflow-y-auto"
             onClick={() => setSelectedExpert(null)}
           >
             <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" />
@@ -272,7 +272,7 @@ export default function ExpertsPage() {
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-3xl glass rounded-3xl p-8 border border-violet-500/20 my-8"
+              className="relative w-full max-w-3xl glass rounded-3xl p-5 sm:p-8 border border-violet-500/20 my-4"
             >
               {/* Close Button */}
               <button
@@ -283,16 +283,16 @@ export default function ExpertsPage() {
               </button>
               
               {/* Header */}
-              <div className="flex items-start gap-6 mb-8">
+              <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6 mb-5 sm:mb-8">
                 <div className={cn(
-                  'w-20 h-20 rounded-2xl bg-gradient-to-br flex items-center justify-center text-white font-bold text-2xl shadow-xl',
+                  'w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br flex items-center justify-center text-white font-bold text-xl sm:text-2xl shadow-xl flex-shrink-0',
                   stanceConfig[selectedExpert.stance].gradient
                 )}>
                   {selectedExpert.name.split(' ').map(n => n[0]).join('')}
                 </div>
                 
                 <div className="flex-1">
-                  <h2 className="text-3xl font-bold text-white mb-1">{selectedExpert.name}</h2>
+                  <h2 className="text-2xl sm:text-3xl font-bold text-white mb-1">{selectedExpert.name}</h2>
                   <p className="text-zinc-400">{selectedExpert.title}</p>
                   <p className="text-violet-400">{selectedExpert.organization}</p>
                   
@@ -314,14 +314,14 @@ export default function ExpertsPage() {
               </div>
               
               {/* Biography */}
-              <div className="mb-8">
+              <div className="mb-5 sm:mb-8">
                 <h3 className="text-lg font-semibold text-white mb-3">Biography</h3>
                 <p className="text-zinc-400 leading-relaxed">{selectedExpert.biography}</p>
               </div>
               
               {/* Predictions */}
               {selectedExpert.predictions.length > 0 && (
-                <div className="mb-8">
+                <div className="mb-5 sm:mb-8">
                   <h3 className="text-lg font-semibold text-white mb-4">Predictions</h3>
                   <div className="space-y-4">
                     {selectedExpert.predictions.map((pred) => (
@@ -362,7 +362,7 @@ export default function ExpertsPage() {
               
               {/* Quotes */}
               {selectedExpert.quotes.length > 0 && (
-                <div className="mb-8">
+                <div className="mb-5 sm:mb-8">
                   <h3 className="text-lg font-semibold text-white mb-4">Notable Quotes</h3>
                   <div className="space-y-4">
                     {selectedExpert.quotes.map((quote) => (
