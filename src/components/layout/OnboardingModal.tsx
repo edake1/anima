@@ -78,14 +78,13 @@ export function OnboardingModal() {
         />
 
         {/* Scroll layer — sits on top of backdrop */}
-        <div className="absolute inset-0 overflow-y-auto">
-          <div className="flex min-h-full items-start sm:items-center justify-center p-4">
+        <div className="absolute inset-0 flex items-center justify-center p-4">
         {/* Content */}
         <motion.div
           initial={{ scale: 0.9, opacity: 0, y: 20 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="relative w-full max-w-4xl glass rounded-3xl border border-violet-500/20 my-4"
+          className="relative w-full max-w-4xl glass rounded-3xl border border-violet-500/20 overflow-y-auto max-h-[calc(100dvh-2rem)]"
         >
           {step === 0 ? (
             // Welcome Step
@@ -253,7 +252,6 @@ export function OnboardingModal() {
             </div>
           )}
         </motion.div>
-          </div>
         </div>
       </motion.div>
     </AnimatePresence>

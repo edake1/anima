@@ -390,14 +390,13 @@ export default function PredictionsPage() {
             onClick={() => setWizardOpen(false)}
           >
             <div className="absolute inset-0 bg-black/70 backdrop-blur-xl" onClick={() => setWizardOpen(false)} />
-            <div className="absolute inset-0 overflow-y-auto">
-              <div className="flex min-h-full items-start sm:items-center justify-center p-4">
+            <div className="absolute inset-0 flex items-center justify-center p-4">
             <motion.div
               initial={{ scale: 0.95, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative z-10 w-full max-w-xl my-4"
+              className="relative z-10 w-full max-w-xl overflow-y-auto max-h-[calc(100dvh-2rem)]"
             >
               <button
                 onClick={() => setWizardOpen(false)}
@@ -407,7 +406,6 @@ export default function PredictionsPage() {
               </button>
               <UserPredictionWizard onComplete={() => setWizardOpen(false)} />
             </motion.div>
-              </div>
             </div>
           </motion.div>
         )}

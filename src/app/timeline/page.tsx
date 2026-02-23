@@ -334,65 +334,65 @@ export default function TimelinePage() {
           onClick={() => setSelectedMilestone(null)}
         >
           <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" onClick={() => setSelectedMilestone(null)} />
-          <div className="absolute inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-start sm:items-center justify-center p-4">
+          <div className="absolute inset-0 flex items-center justify-center p-4">
           <motion.div
             initial={{ scale: 0.9, y: 20 }}
             animate={{ scale: 1, y: 0 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-2xl glass rounded-3xl p-5 sm:p-8 border border-violet-500/20 my-4"
+            className="relative w-full max-w-2xl glass rounded-3xl border border-violet-500/20 overflow-y-auto max-h-[calc(100dvh-2rem)]"
           >
-            <button
-              onClick={() => setSelectedMilestone(null)}
-              className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/5"
-            >
-              <span className="sr-only">Close</span>
-              ×
-            </button>
-            
-            <div className="flex items-start gap-4 mb-6">
-              <div 
-                className="w-12 h-12 rounded-xl flex items-center justify-center"
-                style={{ backgroundColor: getImpactColor(selectedMilestone.impact) }}
+            <div className="p-5 sm:p-8">
+              <button
+                onClick={() => setSelectedMilestone(null)}
+                className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/5"
               >
-                {(() => {
-                  const Icon = categoryIcons[selectedMilestone.category] || Zap;
-                  return <Icon className="w-6 h-6 text-white" />;
-                })()}
-              </div>
-              <div>
-                <h2 className="text-xl sm:text-2xl font-bold text-white">{selectedMilestone.title}</h2>
-                <p className="text-zinc-400">{new Date(selectedMilestone.date).toLocaleDateString('en-US', { 
-                  year: 'numeric', month: 'long', day: 'numeric' 
-                })}</p>
-              </div>
-            </div>
-            
-            <p className="text-zinc-300 leading-relaxed mb-6">
-              {selectedMilestone.description}
-            </p>
-            
-            {selectedMilestone.sources.length > 0 && (
-              <div className="border-t border-zinc-800 pt-6">
-                <h4 className="text-sm font-medium text-zinc-400 mb-3">Sources</h4>
-                <div className="flex flex-wrap gap-2">
-                  {selectedMilestone.sources.map((source) => (
-                    <a
-                      key={source.id}
-                      href={source.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-sm text-violet-400 hover:text-violet-300"
-                    >
-                      {source.title}
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
-                  ))}
+                <span className="sr-only">Close</span>
+                ×
+              </button>
+
+              <div className="flex items-start gap-4 mb-6">
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ backgroundColor: getImpactColor(selectedMilestone.impact) }}
+                >
+                  {(() => {
+                    const Icon = categoryIcons[selectedMilestone.category] || Zap;
+                    return <Icon className="w-6 h-6 text-white" />;
+                  })()}
+                </div>
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-bold text-white">{selectedMilestone.title}</h2>
+                  <p className="text-zinc-400">{new Date(selectedMilestone.date).toLocaleDateString('en-US', {
+                    year: 'numeric', month: 'long', day: 'numeric'
+                  })}</p>
                 </div>
               </div>
-            )}
-          </motion.div>
+
+              <p className="text-zinc-300 leading-relaxed mb-6">
+                {selectedMilestone.description}
+              </p>
+
+              {selectedMilestone.sources.length > 0 && (
+                <div className="border-t border-zinc-800 pt-6">
+                  <h4 className="text-sm font-medium text-zinc-400 mb-3">Sources</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedMilestone.sources.map((source) => (
+                      <a
+                        key={source.id}
+                        href={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-sm text-violet-400 hover:text-violet-300"
+                      >
+                        {source.title}
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
+          </motion.div>
           </div>
         </motion.div>
       )}

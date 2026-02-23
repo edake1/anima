@@ -266,15 +266,15 @@ export default function ExpertsPage() {
             onClick={() => setSelectedExpert(null)}
           >
             <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" onClick={() => setSelectedExpert(null)} />
-            <div className="absolute inset-0 overflow-y-auto">
-              <div className="flex min-h-full items-start sm:items-center justify-center p-4">
+            <div className="absolute inset-0 flex items-center justify-center p-4">
             <motion.div
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-3xl glass rounded-3xl p-5 sm:p-8 border border-violet-500/20 my-4"
+              className="relative w-full max-w-3xl glass rounded-3xl border border-violet-500/20 overflow-y-auto max-h-[calc(100dvh-2rem)]"
             >
+              <div className="p-5 sm:p-8">
               {/* Close Button */}
               <button
                 onClick={() => setSelectedExpert(null)}
@@ -399,8 +399,8 @@ export default function ExpertsPage() {
                   </div>
                 </div>
               )}
-            </motion.div>
               </div>
+            </motion.div>
             </div>
           </motion.div>
         )}
