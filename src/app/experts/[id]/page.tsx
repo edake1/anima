@@ -20,6 +20,7 @@ import { milestones } from '@/lib/data/timeline';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { use } from 'react';
+import { useStore } from '@/lib/stores/useStore';
 
 const stanceConfig = {
   optimist: {
@@ -79,6 +80,7 @@ export default function ExpertDetailPage({ params }: { params: Promise<{ id: str
   const pendingCount = expert.predictions.filter((p) => p.status === 'pending').length;
   const resolvedCount = correctCount + incorrectCount;
   const accuracy = resolvedCount > 0 ? Math.round((correctCount / resolvedCount) * 100) : null;
+  const { mode } = useStore();
 
   return (
     <div className="min-h-screen pt-20 pb-20">
@@ -178,6 +180,84 @@ export default function ExpertDetailPage({ params }: { params: Promise<{ id: str
             </div>
           ))}
         </motion.div>
+
+        {/* Mode-aware callout */}
+        {mode === 'explorer' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="glass-light rounded-xl p-4 border-l-2 border-emerald-500/50 flex items-start gap-3"
+          >
+            <span className="text-lg">🧭</span>
+            <div>
+              <p className="text-sm font-semibold text-emerald-300 mb-0.5">Explorer Mode</p>
+              <p className="text-sm text-zinc-400">{expert.name} is an AI <span className="capitalize">{expert.stance}</span> who has made {expert.predictions.length} prediction{expert.predictions.length !== 1 ? 's' : ''}. Read the biography below to understand their perspective on AI’s future.</p>
+            </div>
+          </motion.div>
+        )}
+        {mode === 'analyst' && accuracy !== null && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="glass-light rounded-xl p-4 border-l-2 border-blue-500/50 flex items-start gap-3"
+          >
+            <span className="text-lg">📊</span>
+            <div>
+              <p className="text-sm font-semibold text-blue-300 mb-0.5">Analyst Mode — Track Record</p>
+              <p className="text-sm text-zinc-400">{expert.name} has a <span className="font-bold text-white">{accuracy}% accuracy rate</span> across {resolvedCount} resolved prediction{resolvedCount !== 1 ? 's' : ''} ({correctCount} correct, {incorrectCount} incorrect). {pendingCount > 0 ? `${pendingCount} prediction${pendingCount !== 1 ? 's' : ''} still pending resolution.` : 'All predictions are resolved.'}</p>
+            </div>
+          </motion.div>
+        )}
+        {mode === 'analyst' && accuracy === null && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="glass-light rounded-xl p-4 border-l-2 border-blue-500/50 flex items-start gap-3"
+          >
+            <span className="text-lg">📊</span>
+            <div>
+              <p className="text-sm font-semibold text-blue-300 mb-0.5">Analyst Mode</p>
+              <p className="text-sm text-zinc-400">{expert.predictions.length} prediction{expert.predictions.length !== 1 ? 's' : ''} on record — none have resolved yet, so no accuracy rate is available.</p>
+            </div>
+          </motion.div>
+        )}
+        {mode === 'skeptic' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="glass-light rounded-xl p-4 border-l-2 border-amber-500/50 flex items-start gap-3"
+          >
+            <span className="text-lg">🔍</span>
+            <div>
+              <p className="text-sm font-semibold text-amber-300 mb-0.5">Skeptic Mode — Full Track Record</p>
+              <p className="text-sm text-zinc-400">
+                {incorrectCount > 0
+                  ? `${incorrectCount} prediction${incorrectCount !== 1 ? 's' : ''} were incorrect.`
+                  : 'No incorrect predictions on record — yet.'}
+                {pendingCount > 0 ? ` ${pendingCount} prediction${pendingCount !== 1 ? 's' : ''} remain unresolved — the final tally may look different.` : ''}
+                {accuracy !== null ? ` Current accuracy: ${accuracy}%.` : ' Insufficient resolved predictions to compute accuracy.'}
+              </p>
+            </div>
+          </motion.div>
+        )}
+        {mode === 'visionary' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="glass-light rounded-xl p-4 border-l-2 border-violet-500/50 flex items-start gap-3"
+          >
+            <span className="text-lg">✨</span>
+            <div>
+              <p className="text-sm font-semibold text-violet-300 mb-0.5">Visionary Mode</p>
+              <p className="text-sm text-zinc-400">{expert.name} is one of the minds shaping how we think about the future. Their predictions aren’t just forecasts — they’re signals worth tracking.</p>
+            </div>
+          </motion.div>
+        )}
 
         {/* Biography */}
         <motion.section

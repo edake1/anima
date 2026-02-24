@@ -19,6 +19,8 @@ import { TimelineRiver } from '@/components/visualization/TimelineRiver';
 import { PredictionGauge } from '@/components/visualization/PredictionGauge';
 import { ExpertOrbit } from '@/components/visualization/ExpertOrbit';
 import { LiveMetaculusWidget } from '@/components/interactive/LiveMetaculusWidget';
+import { AiFacts } from '@/components/interactive/AiFacts';
+import { ModeText } from '@/components/interactive/ModeAwareContent';
 import { useStore } from '@/lib/stores/useStore';
 import { CountUpStat } from '@/components/ui/CountUpStat';
 
@@ -161,9 +163,13 @@ export default function HomePage() {
             transition={{ delay: 0.4, duration: 0.8 }}
             className="text-xl sm:text-2xl text-zinc-400 mb-12 max-w-3xl mx-auto leading-relaxed"
           >
-            Explore the evolution from <span className="text-violet-400">Large Language Models</span> to{' '}
-            <span className="text-pink-400">Artificial Superintelligence</span>. 
-            Track expert predictions, discover concepts, and navigate the future.
+            <ModeText
+              explorer="New to AI? Follow the story — from the first neural networks to today's breakthroughs."
+              analyst="Quantified predictions, probability data, and accuracy tracking from the world's top AI researchers."
+              visionary="Intelligence is accelerating. Track every signal, every breakthrough, every expert forecast as history unfolds."
+              skeptic="Timelines are speculative. Predictions often fail. Here's the full picture — hype, uncertainty, and evidence together."
+              fallback="Explore the evolution from Large Language Models to Artificial Superintelligence. Track expert predictions, discover concepts, and navigate the future."
+            />
           </motion.p>
           
           {/* CTAs */}
@@ -173,24 +179,51 @@ export default function HomePage() {
             transition={{ delay: 0.5, duration: 0.8 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
           >
-            <Link href="/timeline">
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white px-8 py-6 text-lg rounded-full shadow-lg shadow-violet-500/30 group"
-              >
-                Begin Exploration
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
-            <Link href="/predictions">
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-zinc-700 text-zinc-300 hover:bg-zinc-800/50 px-8 py-6 text-lg rounded-full"
-              >
-                View Predictions
-              </Button>
-            </Link>
+            {mode === 'analyst' ? (
+              <>
+                <Link href="/predictions">
+                  <Button size="lg" className="bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white px-8 py-6 text-lg rounded-full shadow-lg shadow-violet-500/30 group">
+                    View Predictions <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+                <Link href="/experts">
+                  <Button size="lg" variant="outline" className="border-zinc-700 text-zinc-300 hover:bg-zinc-800/50 px-8 py-6 text-lg rounded-full">Meet the Experts</Button>
+                </Link>
+              </>
+            ) : mode === 'explorer' ? (
+              <>
+                <Link href="/timeline">
+                  <Button size="lg" className="bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white px-8 py-6 text-lg rounded-full shadow-lg shadow-violet-500/30 group">
+                    Begin Your Journey <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+                <Link href="/concepts">
+                  <Button size="lg" variant="outline" className="border-zinc-700 text-zinc-300 hover:bg-zinc-800/50 px-8 py-6 text-lg rounded-full">Learn Concepts</Button>
+                </Link>
+              </>
+            ) : mode === 'skeptic' ? (
+              <>
+                <Link href="/predictions">
+                  <Button size="lg" className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white px-8 py-6 text-lg rounded-full shadow-lg shadow-amber-500/30 group">
+                    Examine the Evidence <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+                <Link href="/sources">
+                  <Button size="lg" variant="outline" className="border-zinc-700 text-zinc-300 hover:bg-zinc-800/50 px-8 py-6 text-lg rounded-full">View Sources</Button>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link href="/timeline">
+                  <Button size="lg" className="bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white px-8 py-6 text-lg rounded-full shadow-lg shadow-violet-500/30 group">
+                    Begin Exploration <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+                <Link href="/predictions">
+                  <Button size="lg" variant="outline" className="border-zinc-700 text-zinc-300 hover:bg-zinc-800/50 px-8 py-6 text-lg rounded-full">View Predictions</Button>
+                </Link>
+              </>
+            )}
           </motion.div>
           
           {/* Quick Stats */}
@@ -377,6 +410,13 @@ export default function HomePage() {
         </div>
       </section>
       
+      {/* Did You Know — AI Facts */}
+      <section className="relative py-12 px-4">
+        <div className="max-w-2xl mx-auto">
+          <AiFacts />
+        </div>
+      </section>
+
       {/* Expert Constellation Preview */}
       <section className="relative py-24 px-4">
         <div className="max-w-7xl mx-auto">

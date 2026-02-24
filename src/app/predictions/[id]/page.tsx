@@ -20,6 +20,7 @@ import { ProbabilityChart } from '@/components/interactive/ProbabilityChart';
 import { LiveMetaculusWidget } from '@/components/interactive/LiveMetaculusWidget';
 import { cn } from '@/lib/utils';
 import { use } from 'react';
+import { useStore } from '@/lib/stores/useStore';
 
 const categoryConfig: Record<string, { label: string; color: string; gradient: string }> = {
   'agi-timeline': { label: 'AGI Timeline', color: 'text-violet-400', gradient: 'from-violet-600 to-purple-600' },
@@ -63,6 +64,7 @@ export default function PredictionDetailPage({ params }: { params: Promise<{ id:
 
   const circumference = 2 * Math.PI * 54;
   const strokeDashoffset = circumference - (prediction.probability * circumference);
+  const { mode } = useStore();
 
   return (
     <div className="min-h-screen pt-20 pb-20">
@@ -134,6 +136,64 @@ export default function PredictionDetailPage({ params }: { params: Promise<{ id:
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-10 space-y-10">
+        {/* Mode-aware callout */}
+        {mode === 'explorer' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="glass-light rounded-xl p-4 border-l-2 border-emerald-500/50 flex items-start gap-3"
+          >
+            <span className="text-lg">🧭</span>
+            <div>
+              <p className="text-sm font-semibold text-emerald-300 mb-0.5">Explorer Mode</p>
+              <p className="text-sm text-zinc-400">{pct}% probability means roughly {pct} out of 100 forecasters think this event will occur. Scroll down to see how community opinion has shifted over time.</p>
+            </div>
+          </motion.div>
+        )}
+        {mode === 'analyst' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="glass-light rounded-xl p-4 border-l-2 border-blue-500/50 flex items-start gap-3"
+          >
+            <span className="text-lg">📊</span>
+            <div>
+              <p className="text-sm font-semibold text-blue-300 mb-0.5">Analyst Mode</p>
+              <p className="text-sm text-zinc-400">Current probability: <span className="font-bold text-white">{pct}%</span> · Expected: <span className="font-bold text-white">{prediction.timeframe.expected}</span> · Uncertainty window: <span className="font-bold text-white">{prediction.timeframe.earliest}–{prediction.timeframe.latest}</span> ({prediction.timeframe.latest - prediction.timeframe.earliest} years). Full distribution chart and live Metaculus data below.</p>
+            </div>
+          </motion.div>
+        )}
+        {mode === 'skeptic' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="glass-light rounded-xl p-4 border-l-2 border-amber-500/50 flex items-start gap-3"
+          >
+            <span className="text-lg">⚠️</span>
+            <div>
+              <p className="text-sm font-semibold text-amber-300 mb-0.5">Skeptic Mode — Uncertainty Range</p>
+              <p className="text-sm text-zinc-400">Forecasters disagree by a <span className="font-bold text-amber-300">{prediction.timeframe.latest - prediction.timeframe.earliest}-year spread</span> ({prediction.timeframe.earliest}–{prediction.timeframe.latest}). A {pct}% current probability leaves significant room for being wrong in both directions.</p>
+            </div>
+          </motion.div>
+        )}
+        {mode === 'visionary' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="glass-light rounded-xl p-4 border-l-2 border-violet-500/50 flex items-start gap-3"
+          >
+            <span className="text-lg">✨</span>
+            <div>
+              <p className="text-sm font-semibold text-violet-300 mb-0.5">Visionary Mode</p>
+              <p className="text-sm text-zinc-400">Every percentage point shift here represents a civilizational signal. Track the trend — the direction matters as much as the number.</p>
+            </div>
+          </motion.div>
+        )}
+
         {/* Probability Chart */}
         {prediction.probabilityDistribution && prediction.probabilityDistribution.length > 0 && (
           <motion.section

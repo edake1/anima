@@ -277,3 +277,20 @@
  GET / 200 in 10ms (compile: 1499µs, render: 8ms)
  GET / 200 in 9ms (compile: 1704µs, render: 7ms)
  GET / 200 in 10ms (compile: 1721µs, render: 8ms)
+ GET / 200 in 67ms (compile: 1757µs, render: 65ms)
+ GET /api/metaculus?id=5121 200 in 3ms (compile: 1202µs, render: 1860µs)
+ GET /api/metaculus?id=3479 200 in 5ms (compile: 3ms, render: 1237µs)
+ GET / 200 in 156ms (compile: 24ms, render: 132ms)
+ GET / 200 in 10ms (compile: 2ms, render: 8ms)
+ GET / 200 in 720ms (compile: 4ms, render: 716ms)
+ GET /api/metaculus?id=5121 200 in 194ms (compile: 3ms, render: 191ms)
+ GET /api/metaculus?id=3479 200 in 193ms (compile: 11ms, render: 182ms)
+ GET / 200 in 83ms (compile: 5ms, render: 78ms)
+ GET /api/metaculus?id=5121 200 in 11ms (compile: 5ms, render: 5ms)
+ GET /api/metaculus?id=3479 200 in 3ms (compile: 1289µs, render: 2ms)
+✓ Compiled in 8.2s
+✓ Compiled in 7.8s
+✓ Finished filesystem cache database compaction in 33.6s
+ GET / 200 in 387ms (compile: 14ms, render: 372ms)
+ GET /api/metaculus?id=5121 200 in 628ms (compile: 134ms, render: 494ms)
+ GET /api/metaculus?id=3479 200 in 799ms (compile: 336ms, render: 463ms)

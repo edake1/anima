@@ -8,6 +8,7 @@ import { ArrowLeft, BookOpen, Layers, Zap, Link2, ExternalLink } from 'lucide-re
 import { getConceptById, getConnectedConcepts } from '@/lib/data/concepts';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { useStore } from '@/lib/stores/useStore';
 
 const categoryConfig: Record<string, { label: string; color: string; bg: string }> = {
   architecture: { label: 'Architecture', color: 'text-violet-400', bg: 'bg-violet-500/10 border-violet-500/30' },
@@ -45,6 +46,7 @@ export default function ConceptDetailPage({ params }: Props) {
   const connected = getConnectedConcepts(id);
   const cat = categoryConfig[concept.category] ?? categoryConfig.architecture;
   const diff = difficultyConfig[concept.difficulty] ?? difficultyConfig.beginner;
+  const { mode } = useStore();
 
   return (
     <div className="min-h-screen pt-24 pb-16 px-4">
@@ -79,6 +81,66 @@ export default function ConceptDetailPage({ params }: Props) {
           </h1>
           <p className="text-xl text-zinc-400 leading-relaxed">{concept.shortDescription}</p>
         </motion.div>
+
+        {/* Mode-aware callout */}
+        {mode === 'explorer' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="mb-8 glass-light rounded-xl p-4 border-l-2 border-emerald-500/50 flex items-start gap-3"
+          >
+            <span className="text-lg">🧭</span>
+            <div>
+              <p className="text-sm font-semibold text-emerald-300 mb-0.5">Explorer Mode</p>
+              <p className="text-sm text-zinc-400">Read the explanation below at your own pace — then use the Connections section to follow related ideas wherever curiosity leads.</p>
+            </div>
+          </motion.div>
+        )}
+        {mode === 'analyst' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="mb-8 glass-light rounded-xl p-4 border-l-2 border-blue-500/50 flex items-start gap-3"
+          >
+            <span className="text-lg">📊</span>
+            <div>
+              <p className="text-sm font-semibold text-blue-300 mb-0.5">Analyst Mode</p>
+              <p className="text-sm text-zinc-400">
+                Difficulty: <span className={cn('font-semibold', diff.color)}>{diff.label}</span> · Category: <span className="font-semibold text-white">{cat.label}</span> · {concept.connections.length} connected concept{concept.connections.length !== 1 ? 's' : ''} · {concept.sources.length} cited source{concept.sources.length !== 1 ? 's' : ''}
+              </p>
+            </div>
+          </motion.div>
+        )}
+        {mode === 'skeptic' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="mb-8 glass-light rounded-xl p-4 border-l-2 border-amber-500/50 flex items-start gap-3"
+          >
+            <span className="text-lg">🔍</span>
+            <div>
+              <p className="text-sm font-semibold text-amber-300 mb-0.5">Skeptic Mode</p>
+              <p className="text-sm text-zinc-400">{concept.sources.length > 0 ? `${concept.sources.length} source${concept.sources.length !== 1 ? 's' : ''} cited below — evaluate the evidence and consider the credibility scores before forming conclusions.` : 'No sources are cited for this concept — treat claims here with extra scrutiny.'}</p>
+            </div>
+          </motion.div>
+        )}
+        {mode === 'visionary' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="mb-8 glass-light rounded-xl p-4 border-l-2 border-violet-500/50 flex items-start gap-3"
+          >
+            <span className="text-lg">🚀</span>
+            <div>
+              <p className="text-sm font-semibold text-violet-300 mb-0.5">Visionary Mode</p>
+              <p className="text-sm text-zinc-400">This concept is part of the bigger picture. Trace its {concept.connections.length} connection{concept.connections.length !== 1 ? 's' : ''} to see how it feeds into the trajectory toward transformative AI.</p>
+            </div>
+          </motion.div>
+        )}
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main content */}
