@@ -324,3 +324,11 @@
 ✓ Compiled in 53ms
 ✓ Compiled in 25ms
 ✓ Compiled in 50ms
+ GET / 200 in 1146ms (compile: 89ms, render: 1058ms)
+ GET /api/metaculus?id=5121 200 in 5ms (compile: 1547µs, render: 4ms)
+ GET /api/metaculus?id=3479 200 in 8ms (compile: 6ms, render: 2ms)
+✓ Compiled in 498ms
+ GET / 200 in 448ms (compile: 10ms, render: 438ms)
+ GET / 200 in 449ms (compile: 60ms, render: 389ms)
+ GET /sources 200 in 339ms (compile: 184ms, render: 155ms)
+ GET /experts 200 in 86ms (compile: 71ms, render: 15ms)

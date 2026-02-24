@@ -11,13 +11,16 @@ import {
   AlertTriangle,
   ThumbsUp,
   ThumbsDown,
+  Zap,
 } from 'lucide-react';
 import Link from 'next/link';
 import { getPredictionById } from '@/lib/data/predictions';
 import { experts } from '@/lib/data/experts';
 import { Badge } from '@/components/ui/badge';
 import { ProbabilityChart } from '@/components/interactive/ProbabilityChart';
+import { ProbabilityTrend } from '@/components/interactive/ProbabilityTrend';
 import { LiveMetaculusWidget } from '@/components/interactive/LiveMetaculusWidget';
+import { useMetaculusPrediction } from '@/hooks/useMetaculusPrediction';
 import { cn } from '@/lib/utils';
 import { use } from 'react';
 import { useStore } from '@/lib/stores/useStore';
@@ -43,9 +46,13 @@ export default function PredictionDetailPage({ params }: { params: Promise<{ id:
   const prediction = getPredictionById(id);
   if (!prediction) notFound();
 
+  // Use live Metaculus data if available
+  const { probability, trend, sparkline, isLoading, lastFetched } =
+    useMetaculusPrediction(prediction.metaculusId);
+
   const cat = categoryConfig[prediction.category] ?? categoryConfig['agi-timeline'];
-  const pct = Math.round(prediction.probability * 100);
-  const metaculusId = metaculusMap[id];
+  const displayProbability = probability ?? prediction.probability;
+  const pct = Math.round(displayProbability * 100);
 
   // Find experts who have predictions on this topic
   const relatedExperts = experts.filter((e) =>
@@ -63,7 +70,7 @@ export default function PredictionDetailPage({ params }: { params: Promise<{ id:
   );
 
   const circumference = 2 * Math.PI * 54;
-  const strokeDashoffset = circumference - (prediction.probability * circumference);
+  const strokeDashoffset = circumference - (displayProbability * circumference);
   const { mode } = useStore();
 
   return (
@@ -194,6 +201,28 @@ export default function PredictionDetailPage({ params }: { params: Promise<{ id:
           </motion.div>
         )}
 
+        {/* Live Metaculus Data */}
+        {probability !== null && probability !== undefined && sparkline.length > 0 && (
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <h2 className="text-xl font-bold text-white mb-4">Live Forecast Trend</h2>
+            <ProbabilityTrend
+              probability={displayProbability}
+              change={trend.change}
+              changePercent={trend.changePercent}
+              direction={trend.direction}
+              sparkline={sparkline}
+              isLoading={isLoading}
+              lastUpdated={lastFetched?.toISOString()}
+              community={displayProbability}
+              description="Based on real-time data from Metaculus, the world's largest prediction aggregation platform."
+            />
+          </motion.section>
+        )}
+
         {/* Probability Chart */}
         {prediction.probabilityDistribution && prediction.probabilityDistribution.length > 0 && (
           <motion.section
@@ -250,14 +279,14 @@ export default function PredictionDetailPage({ params }: { params: Promise<{ id:
         </motion.section>
 
         {/* Live Metaculus Widget */}
-        {metaculusId && (
+        {prediction.metaculusId && (
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25 }}
           >
-            <h2 className="text-xl font-bold text-white mb-4">Live Forecast</h2>
-            <LiveMetaculusWidget questionId={metaculusId} />
+            <h2 className="text-xl font-bold text-white mb-4">Community on Metaculus</h2>
+            <LiveMetaculusWidget questionId={prediction.metaculusId} />
           </motion.section>
         )}
 
