@@ -23,27 +23,31 @@ import { useStore } from '@/lib/stores/useStore';
 import { cn } from '@/lib/utils';
 import { Expert, ExpertStance } from '@/types';
 
-const stanceConfig: Record<ExpertStance, { label: string; color: string; gradient: string; description: string }> = {
+const stanceConfig: Record<ExpertStance, { label: string; plural: string; color: string; gradient: string; description: string }> = {
   optimist: {
     label: 'Optimist',
+    plural: 'Optimists',
     color: 'text-emerald-400',
     gradient: 'from-emerald-500 to-teal-600',
     description: 'Believes AI development will bring positive outcomes'
   },
   cautious: {
     label: 'Cautious',
+    plural: 'Cautious',
     color: 'text-amber-400',
     gradient: 'from-amber-500 to-orange-600',
     description: 'Warns of risks while acknowledging potential benefits'
   },
   skeptic: {
     label: 'Skeptic',
+    plural: 'Skeptics',
     color: 'text-blue-400',
     gradient: 'from-blue-500 to-indigo-600',
     description: 'Questions AGI timelines and/or existential risk claims'
   },
   neutral: {
     label: 'Neutral',
+    plural: 'Neutrals',
     color: 'text-violet-400',
     gradient: 'from-violet-500 to-purple-600',
     description: 'Balanced view, focused on safety research'
@@ -167,7 +171,7 @@ export default function ExpertsPage() {
                   <div className={cn('text-2xl font-bold mb-1', config.color)}>
                     {count}
                   </div>
-                  <div className="text-sm text-zinc-400">{config.label}s</div>
+                  <div className="text-sm text-zinc-400">{config.plural}</div>
                 </motion.div>
               );
             })}
