@@ -11,6 +11,7 @@ export const predictions: Prediction[] = [
     title: 'AGI by 2027',
     description: 'AI systems achieve human-level general intelligence across all cognitive domains by 2027.',
     category: 'agi-timeline',
+    metaculusId: 5121,
     probability: 0.25,
     probabilityDistribution: [
       { year: 2025, probability: 0.05 },
@@ -33,6 +34,7 @@ export const predictions: Prediction[] = [
     title: 'AGI by 2030',
     description: 'AI systems achieve human-level general intelligence by 2030.',
     category: 'agi-timeline',
+    metaculusId: 3479,
     probability: 0.55,
     probabilityDistribution: [
       { year: 2025, probability: 0.05 },
@@ -58,6 +60,7 @@ export const predictions: Prediction[] = [
     title: 'ASI by 2035',
     description: 'Artificial Superintelligence - AI that dramatically exceeds human intelligence in all domains - emerges within a decade of AGI.',
     category: 'asi-timeline',
+    metaculusId: 5122,
     probability: 0.35,
     probabilityDistribution: [
       { year: 2030, probability: 0.10 },
@@ -80,6 +83,7 @@ export const predictions: Prediction[] = [
     title: 'AI Alignment Success',
     description: 'Technical alignment problem is solved - AI systems reliably pursue intended goals without harmful misalignment.',
     category: 'alignment-success',
+    metaculusId: 5123,
     probability: 0.45,
     timeframe: { earliest: 2025, expected: 2030, latest: 2040 },
     sources: [

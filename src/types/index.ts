@@ -118,6 +118,7 @@ export interface Prediction {
     disagree: number;
     total: number;
   };
+  metaculusId?: number; // Link to live Metaculus question
 }
 
 export type PredictionCategory =

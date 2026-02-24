@@ -21,6 +21,7 @@ import { predictions } from '@/lib/data/predictions';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { PredictionGauge } from '@/components/visualization/PredictionGauge';
+import { LivePredictionCard } from '@/components/interactive/LivePredictionCard';
 import { UserPredictionWizard } from '@/components/interactive/UserPredictionWizard';
 import { cn } from '@/lib/utils';
 import { PredictionCategory } from '@/types';
@@ -202,157 +203,13 @@ export default function PredictionsPage() {
           <div className="grid gap-6">
             {filteredPredictions.map((prediction, index) => {
               const config = categoryConfig[prediction.category];
-              const isControversial = Math.abs(prediction.probability - 0.5) < 0.15;
-              
               return (
-                <motion.div
+                <LivePredictionCard
                   key={prediction.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                  className="glass-light rounded-2xl p-6 border border-transparent hover:border-violet-500/20 transition-all"
-                >
-                  <div className="flex flex-col lg:flex-row gap-6">
-                    {/* Probability Display */}
-                    <div className="flex-shrink-0 flex items-center gap-4">
-                      <div className="relative w-24 h-24">
-                        <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
-                          <circle
-                            cx="50"
-                            cy="50"
-                            r="40"
-                            fill="none"
-                            stroke="rgba(255,255,255,0.1)"
-                            strokeWidth="12"
-                          />
-                          <motion.circle
-                            cx="50"
-                            cy="50"
-                            r="40"
-                            fill="none"
-                            stroke={prediction.probability > 0.5 ? '#8b5cf6' : '#f59e0b'}
-                            strokeWidth="12"
-                            strokeLinecap="round"
-                            strokeDasharray={2 * Math.PI * 40}
-                            initial={{ strokeDashoffset: 2 * Math.PI * 40 }}
-                            animate={{ strokeDashoffset: 2 * Math.PI * 40 * (1 - prediction.probability) }}
-                            transition={{ duration: 1, ease: 'easeOut' }}
-                          />
-                        </svg>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className={cn(
-                            'text-2xl font-bold',
-                            prediction.probability > 0.5 ? 'text-violet-400' : 'text-amber-400'
-                          )}>
-                            {Math.round(prediction.probability * 100)}%
-                          </span>
-                        </div>
-                      </div>
-                      
-                      <div className="lg:hidden">
-                        <Badge variant="outline" className="border-zinc-700 text-zinc-400">
-                          {config.label}
-                        </Badge>
-                      </div>
-                    </div>
-                    
-                    {/* Content */}
-                    <div className="flex-1">
-                      <div className="flex items-start justify-between gap-4 mb-3">
-                        <div>
-                          <h3 className="text-xl font-bold text-white mb-1">{prediction.title}</h3>
-                          <p className="text-zinc-400">{prediction.description}</p>
-                        </div>
-                        
-                        <div className="hidden lg:block">
-                          <Badge variant="outline" className="border-zinc-700 text-zinc-400">
-                            {config.label}
-                          </Badge>
-                        </div>
-                      </div>
-                      
-                      {/* Timeframe */}
-                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mb-4 text-sm text-zinc-500">
-                        <div className="flex items-center gap-2">
-                          <Clock className="w-4 h-4" />
-                          <span>
-                            {prediction.timeframe.earliest} - {prediction.timeframe.latest} 
-                            <span className="text-zinc-600 ml-1">(expected: {prediction.timeframe.expected})</span>
-                          </span>
-                        </div>
-                        
-                        {isControversial && (
-                          <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30">
-                            Controversial
-                          </Badge>
-                        )}
-                      </div>
-                      
-                      {/* Community Votes */}
-                      <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-                        <div className="flex items-center gap-2">
-                          <span className="text-emerald-400 font-medium">
-                            {prediction.communityVotes.agree.toLocaleString()}
-                          </span>
-                          <span className="text-zinc-600">agree</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-red-400 font-medium">
-                            {prediction.communityVotes.disagree.toLocaleString()}
-                          </span>
-                          <span className="text-zinc-600">disagree</span>
-                        </div>
-                        
-                        {/* Vote Bar */}
-                        <div className="w-full sm:flex-1 sm:max-w-xs">
-                          <div className="h-2 bg-zinc-800 rounded-full overflow-hidden flex">
-                            <div 
-                              className="h-full bg-emerald-500/50"
-                              style={{ 
-                                width: `${(prediction.communityVotes.agree / prediction.communityVotes.total) * 100}%` 
-                              }}
-                            />
-                            <div 
-                              className="h-full bg-red-500/50"
-                              style={{ 
-                                width: `${(prediction.communityVotes.disagree / prediction.communityVotes.total) * 100}%` 
-                              }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      
-                      {/* Probability Distribution (if available) */}
-                      {prediction.probabilityDistribution && prediction.probabilityDistribution.length > 0 && (
-                        <div className="mt-4 pt-4 border-t border-zinc-800">
-                          <div className="text-xs text-zinc-500 mb-2">Probability over time:</div>
-                          <div className="flex items-end gap-1 h-8">
-                            {prediction.probabilityDistribution.map((point, i) => (
-                              <div
-                                key={i}
-                                className="flex-1 bg-violet-500/30 rounded-t"
-                                style={{ height: `${point.probability * 100}%` }}
-                              >
-                                <div className="text-[8px] text-center text-zinc-600 pt-1">
-                                  {point.year}
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                    
-                    {/* View Details Link */}
-                    <div className="mt-4 pt-4 border-t border-zinc-800 flex justify-end">
-                      <Link href={`/predictions/${prediction.id}`}>
-                        <div className="inline-flex items-center gap-1.5 text-sm text-violet-400 hover:text-violet-300 transition-colors">
-                          View full analysis <ArrowRight className="w-3.5 h-3.5" />
-                        </div>
-                      </Link>
-                    </div>
-                  </div>
-                </motion.div>
+                  prediction={prediction}
+                  categoryConfig={config}
+                  index={index}
+                />
               );
             })}
           </div>
