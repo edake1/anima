@@ -68,6 +68,37 @@ export function Navigation() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Lock body scroll while mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      const scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+      document.body.style.overflowY = 'scroll'; // keep scrollbar width stable
+    } else {
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflowY = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY) * -1);
+      }
+    }
+    return () => {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflowY = '';
+    };
+  }, [isMobileMenuOpen]);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenu(false);
+  }, [pathname]);
+
   // Global ⌘K / Ctrl+K shortcut
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -272,7 +303,7 @@ export function Navigation() {
             transition={{ duration: 0.25 }}
             className="fixed inset-x-0 top-16 sm:top-20 z-40 lg:hidden"
           >
-            <div className="glass border-b border-violet-500/20 p-4 max-h-[80vh] overflow-y-auto">
+            <div className="glass border-b border-violet-500/20 p-4 max-h-[80dvh] overflow-y-auto overscroll-contain">
               <nav className="flex flex-col gap-1">
                 {navItems.map((item) => {
                   const Icon = item.icon;

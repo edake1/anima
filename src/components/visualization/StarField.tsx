@@ -18,8 +18,9 @@ export function StarField() {
     const container = containerRef.current;
     if (!container) return;
     
-    // Generate stars
-    const starCount = 150;
+    // Fewer stars on mobile — reduces GPU/CSS animation overhead
+    const isMobile = window.matchMedia('(max-width: 640px)').matches;
+    const starCount = isMobile ? 60 : 150;
     const stars: Star[] = [];
     
     for (let i = 0; i < starCount; i++) {

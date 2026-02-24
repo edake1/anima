@@ -84,7 +84,6 @@ export default function HomePage() {
   
   const heroOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
   const heroScale = useTransform(scrollYProgress, [0, 0.3], [1, 0.95]);
-  const heroY = useTransform(scrollYProgress, [0, 0.3], [0, -50]);
   
   useEffect(() => {
     startSession();
@@ -94,37 +93,31 @@ export default function HomePage() {
     <div ref={containerRef} className="relative">
       {/* Hero Section */}
       <motion.section
-        style={{ opacity: heroOpacity, scale: heroScale, y: heroY }}
-        className="relative min-h-screen flex flex-col items-center justify-center px-4 pt-20"
+        style={{ opacity: heroOpacity, scale: heroScale }}
+        className="relative min-h-dvh flex flex-col items-center justify-center px-4 pt-20"
       >
-        {/* Animated Background Orbs */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Animated Background Orbs — desktop only (too GPU-heavy on mobile) */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none hidden sm:block">
           <motion.div
-            animate={{
-              x: [0, 100, 0],
-              y: [0, -50, 0],
-              scale: [1, 1.2, 1],
-            }}
+            animate={{ x: [0, 100, 0], y: [0, -50, 0], scale: [1, 1.2, 1] }}
             transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
             className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-violet-500/10 blur-[100px]"
           />
           <motion.div
-            animate={{
-              x: [0, -80, 0],
-              y: [0, 60, 0],
-              scale: [1, 0.8, 1],
-            }}
+            animate={{ x: [0, -80, 0], y: [0, 60, 0], scale: [1, 0.8, 1] }}
             transition={{ duration: 25, repeat: Infinity, ease: 'easeInOut' }}
             className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-pink-500/10 blur-[100px]"
           />
           <motion.div
-            animate={{
-              x: [0, 50, 0],
-              y: [0, -30, 0],
-            }}
+            animate={{ x: [0, 50, 0], y: [0, -30, 0] }}
             transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full bg-cyan-500/5 blur-[80px]"
           />
+        </div>
+        {/* Static orbs on mobile — no animation, no GPU overhead */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none sm:hidden">
+          <div className="absolute top-1/4 left-0 w-full h-[300px] rounded-full bg-violet-500/8 blur-[80px]" />
+          <div className="absolute bottom-1/4 right-0 w-full h-[200px] rounded-full bg-pink-500/8 blur-[60px]" />
         </div>
         
         {/* Main Content */}

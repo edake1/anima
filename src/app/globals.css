@@ -80,6 +80,7 @@
 /* Base Styles */
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -87,18 +88,23 @@ body {
   background: var(--theme-bg, #030014);
   color: var(--theme-fg, #e2e8f0);
   overflow-x: hidden;
+  overscroll-behavior-x: none;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
   transition: background 0.4s ease;
 }
 
-/* Subtle dot-grid texture overlay */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: radial-gradient(circle, var(--theme-dot-grid, rgba(139, 92, 246, 0.08)) 1px, transparent 1px);
-  background-size: 40px 40px;
-  pointer-events: none;
-  z-index: 0;
+/* Subtle dot-grid texture overlay — desktop only */
+@media (min-width: 641px) {
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle, var(--theme-dot-grid, rgba(139, 92, 246, 0.08)) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
 }
 
 /* Ensure content stays above the texture */
@@ -201,6 +207,7 @@ body::before {
 .glass {
   background: var(--theme-glass-bg, rgba(15, 12, 41, 0.6));
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--theme-glass-border, rgba(139, 92, 246, 0.1));
   transition: background 0.4s ease, border-color 0.4s ease;
 }
@@ -208,7 +215,20 @@ body::before {
 .glass-light {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Reduce blur on mobile to avoid scroll jank */
+@media (max-width: 640px) {
+  .glass {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .glass-light {
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
 }
 
 /* Particle System */

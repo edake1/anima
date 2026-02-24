@@ -294,3 +294,29 @@
  GET / 200 in 387ms (compile: 14ms, render: 372ms)
  GET /api/metaculus?id=5121 200 in 628ms (compile: 134ms, render: 494ms)
  GET /api/metaculus?id=3479 200 in 799ms (compile: 336ms, render: 463ms)
+ GET / 200 in 343ms (compile: 161ms, render: 183ms)
+ GET / 200 in 243ms (compile: 29ms, render: 213ms)
+ GET /sources 200 in 398ms (compile: 97ms, render: 301ms)
+ GET / 200 in 49ms (compile: 9ms, render: 40ms)
+ GET /api/metaculus?id=5121 200 in 454ms (compile: 17ms, render: 437ms)
+ GET /api/metaculus?id=3479 200 in 457ms (compile: 35ms, render: 423ms)
+ GET / 200 in 3.0s (compile: 12ms, render: 2.9s)
+ GET /api/metaculus?id=5121 200 in 193ms (compile: 84ms, render: 109ms)
+ GET /api/metaculus?id=3479 200 in 275ms (compile: 266ms, render: 9ms)
+ GET / 200 in 310ms (compile: 116ms, render: 194ms)
+ GET / 200 in 1682ms (compile: 110ms, render: 1572ms)
+ GET /api/metaculus?id=5121 200 in 1040ms (compile: 130ms, render: 911ms)
+ GET /api/metaculus?id=3479 200 in 1381ms (compile: 1270ms, render: 111ms)
+✓ Compiled in 794ms
+ GET /api/metaculus?id=5121 200 in 164ms (compile: 80ms, render: 84ms)
+ GET /api/metaculus?id=3479 200 in 132ms (compile: 92ms, render: 40ms)
+ GET /api/metaculus?id=5121 200 in 754ms (compile: 724ms, render: 30ms)
+ GET /api/metaculus?id=3479 200 in 678ms (compile: 429ms, render: 249ms)
+✓ Compiled in 3.1s
+✓ Compiled in 2.4s
+✓ Compiled in 10.2s
+✓ Compiled in 223ms
+✓ Compiled in 1054ms
+✓ Compiled in 401ms
+✓ Compiled in 483ms
+✓ Compiled in 48ms
