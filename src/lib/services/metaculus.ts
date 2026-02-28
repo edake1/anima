@@ -38,6 +38,15 @@ export interface HistoricalData {
   lastUpdated: string;
 }
 
+interface ProxyMetaculusQuestion {
+  id: number;
+  title: string;
+  description?: string;
+  publishTime?: string;
+  closeTime?: string;
+  communityPrediction: number | null;
+}
+
 // Metaculus question IDs we track
 const TRACKED_QUESTIONS = {
   'agi-by-2030': 5121,
@@ -55,26 +64,48 @@ const TRACKED_QUESTIONS = {
 export async function fetchMetaculusQuestion(
   questionId: number
 ): Promise<MetaculusQuestion | null> {
-  try {
-    const response = await fetch(
-      `https://www.metaculus.com/api2/questions/${questionId}/`,
-      {
-        headers: {
-          'Accept': 'application/json',
-        },
+  const endpoints = [
+    `/api/metaculus?id=${questionId}`,
+    `https://www.metaculus.com/api2/questions/${questionId}/`,
+  ];
+
+  for (const endpoint of endpoints) {
+    try {
+      const response = await fetch(endpoint, {
+        headers: { Accept: 'application/json' },
+      });
+
+      if (!response.ok) {
+        continue;
       }
-    );
 
-    if (!response.ok) {
-      console.error(`Metaculus API error: ${response.status}`);
-      return null;
+      const payload = (await response.json()) as
+        | MetaculusQuestion
+        | ProxyMetaculusQuestion;
+
+      if ('community_prediction' in payload) {
+        return payload;
+      }
+
+      const normalizedProbability =
+        typeof payload.communityPrediction === 'number'
+          ? Math.max(0, Math.min(1, payload.communityPrediction / 100))
+          : 0;
+
+      return {
+        id: payload.id,
+        title: payload.title,
+        description: payload.description ?? '',
+        created_at: payload.publishTime ?? new Date().toISOString(),
+        resolve_time: payload.closeTime ?? '',
+        community_prediction: normalizedProbability,
+      };
+    } catch {
+      continue;
     }
-
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching Metaculus question:', error);
-    return null;
   }
+
+  return null;
 }
 
 /**

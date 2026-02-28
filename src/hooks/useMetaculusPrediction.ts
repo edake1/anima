@@ -63,8 +63,8 @@ export function useMetaculusPrediction(
 
         setLastFetched(new Date());
       }
-    } catch (error) {
-      console.error('Failed to fetch Metaculus data:', error);
+    } catch {
+      console.warn('Metaculus data temporarily unavailable');
     } finally {
       setIsLoading(false);
     }
